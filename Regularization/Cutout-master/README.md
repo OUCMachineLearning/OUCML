@@ -4,7 +4,7 @@ This repository contains the code for the paper [Improved Regularization of Conv
 
 The file is from github repository [Cutout] (https://github.com/uoguelph-mlrg/Cutout).
 
-The useful code is in the file utils/cutout.py.
+The useful code is in the file utils/cutout.py(https://github.com/OUCMachineLearning/OUCML/blob/master/Regularization/Cutout-master/util/cutout.py). 
 
 
 ## Introduction
