@@ -30,9 +30,11 @@ imsave("images/mnist_%d.png" % epoch,gen_imgs)
 运行python wgan.py
 
 结果
+```python
 29995 [D loss: -1.087117] [G loss: 4.016634]
 29996 [D loss: -0.511691] [G loss: 3.625752]
 29997 [D loss: -0.533835] [G loss: 4.005987]
 29998 [D loss: -0.423012] [G loss: 3.547036]
 29999 [D loss: 0.091400] [G loss: 4.133564]
+```
 存在的问题,很容易梯度爆炸,目前W-ACGAN复现失败
