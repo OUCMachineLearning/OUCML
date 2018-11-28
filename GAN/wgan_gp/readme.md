@@ -13,18 +13,12 @@ def merge(images, size):
 	return img
 	
 ###合并多张图在一张
-'''python
+```python
 from scipy.misc import *	
-'''
-'''python
 r, c = 10, 10
-'''
-'''python
 noise = np.random.normal(0, 1, (r * c, self.latent_dim))
-'''
-'''python
 gen_imgs = self.generator.predict(noise)
-'''
+```
 
 # Rescale images 0 - 1
 
