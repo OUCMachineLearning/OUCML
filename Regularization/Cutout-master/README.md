@@ -2,7 +2,9 @@
 
 This repository contains the code for the paper [Improved Regularization of Convolutional Neural Networks with Cutout](https://arxiv.org/abs/1708.04552). 
 
-The file is from repoository [Cutout] (https://github.com/uoguelph-mlrg/Cutout).
+The file is from github repository [Cutout] (https://github.com/uoguelph-mlrg/Cutout).
+
+The useful code is in the file utils/cutout.py.
 
 
 ## Introduction
