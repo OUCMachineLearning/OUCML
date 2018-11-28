@@ -15,6 +15,7 @@ class Cutout(object):
 
     def __call__(self, img):
         """
+        The useful code is here.
         Args:
             img (Tensor): Tensor image of size (C, H, W).
         Returns:
