@@ -1,5 +1,7 @@
 ###解决了display的问题
+
 ###去白边的merge
+
 def merge(images, size):
 	h, w= images.shape[1], images.shape[2]
 	img = np.zeros((h * size[0], w * size[1]))
@@ -8,7 +10,9 @@ def merge(images, size):
 		j = idx // size[1]
 		img[j*h:j*h+h, i*w:i*w+w] = image
 	return img
+	
 ###合并多张图在一张
+
 from scipy.misc import *	
 r, c = 10, 10
 noise = np.random.normal(0, 1, (r * c, self.latent_dim))
