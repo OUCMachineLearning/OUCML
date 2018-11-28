@@ -1,6 +1,6 @@
-###解决了display的问题
+#解决了display的问题
 
-###去白边的merge
+#去白边的merge
 
 def merge(images, size):
 
