@@ -15,16 +15,20 @@ def merge(images, size):
 ###合并多张图在一张
 
 from scipy.misc import *	
+
 r, c = 10, 10
 noise = np.random.normal(0, 1, (r * c, self.latent_dim))
 gen_imgs = self.generator.predict(noise)
 
 # Rescale images 0 - 1
+
 gen_imgs = 0.5 * gen_imgs + 1
 gen_imgs=gen_imgs.reshape(-1,28,28)
 gen_imgs = merge(gen_imgs[:49], [7,7])
 imsave("images/mnist_%d.png" % epoch,gen_imgs)
+
 ###运行python wgan.py
+
 ###结果
 29995 [D loss: -1.087117] [G loss: 4.016634]
 29996 [D loss: -0.511691] [G loss: 3.625752]
