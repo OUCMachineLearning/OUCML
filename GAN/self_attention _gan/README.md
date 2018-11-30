@@ -1,13 +1,21 @@
-##error:
+## error:  
+
 	AttributeError: module 'torchvision.transforms' has no attribute 'Resize'
-###solve:
+### solve:  
+
 	把Resize改成Scale
-###数据集
+### 数据集
+
 下载celebA数据集,把图片解压放到data/CelebA/里面
-###运行
+
+### 运行
+
 	python  main.py --batch_size 64 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_celecb
-###test
+
+### test
+
 	cd samples/sagan_celeb
+
 run by Chen Yang in 9001/cy/Self-Attention-GAN/
 ----
 # Self-Attention GAN
