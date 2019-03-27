@@ -1,4 +1,4 @@
-# One Day One GAN
+# One Day One GAN_keras版
 
 Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do some scientific research in my spare time. Based on the current hot direction of artificial intelligence, I hope to share my research progress with **Generative adversarial network**
 
@@ -10,7 +10,21 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 我的老师曾经对我说过:"**深度学习是一块未知的新大陆,它是一个大的黑箱系统,而GAN则是黑箱中的黑箱,谁要是能打开这个盒子,将会引领一个新的时代**"
 
-## DAY1_GAN的前身今世
+## 目录
 
-我们先来看一段wikipedia上对GAN的定义:
+Day1:GAN的入门
+
+Day2:DCGAN
+
+Day3:Conditional GAN
+
+Day4:ACGAN
+
+Day5:WGAN
+
+Day6:SRGAN
+
+Day7:EBGAN
+
+DAY8:BiGAN
 
