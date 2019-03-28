@@ -1,4 +1,4 @@
-# One Day One GAN_keras版
+# One Day One GAN
 
 Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do some scientific research in my spare time. Based on the current hot direction of artificial intelligence, I hope to share my research progress with **Generative adversarial network**
 
@@ -12,7 +12,7 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 ## 目录
 
-Day1:GAN的入门
+Day1:GAN的入门(keras)
 
 Day2:DCGAN
 

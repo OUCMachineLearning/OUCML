@@ -7,3 +7,5 @@ GAN/Self_attention_GAN_tensorflow/.DS_Store
 .DS_Store
 GAN/Self_attention_GAN_tensorflow/samples/SAGAN_cifar10_hinge_128_128_True/SAGAN_epoch09_visualize.png
 GAN/Self_attention_GAN_tensorflow/samples/SAGAN_cifar10_hinge_128_128_True/SAGAN_train_00_00500.png
+GAN/ESRGAN/
+GAN/SC-FEGAN/
