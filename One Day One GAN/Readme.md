@@ -12,11 +12,11 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 ## 目录
 
-Day1:GAN的入门(keras)
+Day1:[GAN的入门(keras)](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day1)
 
-Day2:DCGAN
+Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day2)
 
-Day3:Conditional GAN
+Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day3)
 
 Day4:ACGAN
 
