@@ -28,3 +28,9 @@ Day7:EBGAN
 
 DAY8:BiGAN
 
+### Attention!
+
+**github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
+
+**原作者:陈扬,现就读与中国海洋大学计算机本科二年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
+

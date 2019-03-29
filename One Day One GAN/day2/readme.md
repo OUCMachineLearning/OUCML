@@ -92,3 +92,12 @@ def build_discriminator(self):
 #### 总结
 
 DCGAN几乎是生成对抗网络的入门模板了,不多赘述.
+
+### 参考
+
+<https://blog.csdn.net/liuxiao214/article/details/74502975>
+
+<https://github.com/carpedm20/DCGAN-tensorflow>
+
+<https://github.com/eriklindernoren/Keras-GAN/blob/master/gan/gan.py>
+
