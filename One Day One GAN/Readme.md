@@ -26,8 +26,6 @@ Day6:SRGAN
 
 Day7:EBGAN
 
-DAY8:BiGAN
-
 ### Attention!
 
 **github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
