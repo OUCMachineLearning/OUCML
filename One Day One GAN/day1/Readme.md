@@ -40,10 +40,10 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 ### 核心公式:
 
-![image_1ct4sn8kqg8ftika3b1nmj6i1j.png-43kB][3]
+![image_1ct4sn8kqg8ftika3b1nmj6i1j.png-43kB](https://ws2.sinaimg.cn/large/006tKfTcly1g1luyefgkvj30w805i0tn.jpg)
 这个公式我们要分成两个部分来看:
 先看前半部分:![image_1ct4ss3bu18gs14fs5af1qgrhf420.png-32.1kB][4]
-这个公式的意思是,先看加号前面$\Epsilon_{x\sim p_{data}(x)}[\log D(x)]+\Epsilon_{z\sim p_z(z)}[log(1-D(G(z)))]$
+这个公式的意思是,先看加号前面$\Epsilon_{x\sim p_{data}(x)}[\log D(x)]+\Epsilon_{z\sim p_z(z)}[log(1-D(G(z)))]​$
 
  ,我们希望D最大,所以log(D(x))应该最大,意味着我的判别器可以很好的识别出,真实世界图像是"true",在看加号后面$\Epsilon_{z\sim p_z(z)}[\log(1-D(G(z)))]$,要让log尽可能的大,需要的是D(G(z))尽可能的小,意味着我们生成模型的图片应该尽可能的被判别模型视为"FALSE".
 
