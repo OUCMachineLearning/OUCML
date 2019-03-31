@@ -18,7 +18,7 @@ Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%2
 
 Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day3)
 
-Day4:ACGAN
+Day4:[ACGAN](<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day4>)
 
 Day5:WGAN
 
