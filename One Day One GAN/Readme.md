@@ -12,7 +12,7 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 ## 目录
 
-Day1:[GAN的入门(keras)](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day1)
+Day1:[GAN的入门](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day1)
 
 Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day2)
 
@@ -20,9 +20,9 @@ Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/O
 
 Day4:[ACGAN](<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day4>)
 
-Day5:WGAN
+Day5:[WGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day5)
 
-Day6:SRGAN
+Day6:[SRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day6)
 
 Day7:EBGAN
 

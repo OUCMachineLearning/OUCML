@@ -71,11 +71,11 @@ Anno文件夹下有个文档identity_CelebA，部分内容如下：
 Our ultimate goal is to train a generating function G that estimates for a given LR input image its corresponding HR counterpart. To achieve this, we train a generator network as a feed-forward CNN GθG parametrized by θG. Here θG = {W1:L ; b1:L } denotes the weights and biases of a L-layer deep network and is obtained by optimizing a SR-specific
 loss function lSR. For training images IHR , n = 1, . . . , N n
 withcorrespondingILR,n=1,...,N,wesolve:
-![image_1ctqe1ovcrng10u110bidd9q1r20.png-7.1kB][9]
+![image-20190401192711613](https://ws3.sinaimg.cn/large/006tKfTcly1g1ncweev8gj30z208qtab.jpg)
 
 ------
 
-## 提出perceptual loss  
+## 提出perceptual loss
 
 作者认为这更接近人的主观感受，因为使用pixel-wise的MSE使得图像变得平滑，而如果先用VGG来抓取到高级特征（feature）表示，再对feature使用MSE，可以更好的抓取不变特征。
 ![image_1ctqe4ifno4g16hkiuo15114f37.png-170kB][10]
@@ -90,10 +90,6 @@ withcorrespondingILR,n=1,...,N,wesolve:
 
 ------
 
-![lovemusicge_1505531655.8268762.JPG-25.3kB][13]
-
-------
-
 ### GAN核心公式
 
 ![image_1ctqdkcva82dabec4k1abboe51j.png-8.6kB][14]
@@ -102,7 +98,7 @@ withcorrespondingILR,n=1,...,N,wesolve:
 
 ### 网络设计
 
-
+![image-20190401192530929](https://ws1.sinaimg.cn/large/006tKfTcly1g1ncuree4sj319a0ne1cl.jpg)
 
 ------
 
