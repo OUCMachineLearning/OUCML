@@ -26,6 +26,8 @@ Day6:[SRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%2
 
 Day7:EBGAN
 
+Day8:[Attentive GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day8)
+
 ### Attention!
 
 **github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
