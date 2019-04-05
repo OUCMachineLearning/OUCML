@@ -10,29 +10,8 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 我的老师曾经对我说过:"**深度学习是一块未知的新大陆,它是一个大的黑箱系统,而GAN则是黑箱中的黑箱,谁要是能打开这个盒子,将会引领一个新的时代**"
 
-## 目录
+今天带来的的《花书》1~3章的手写笔记,当我今天下午拿起花书的那一刻我突然间明白了,功夫到了,读起来自然是一气哼成,畅快淋漓.
 
-Day1:[GAN的入门](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day1)
+![WechatIMG399](./WechatIMG399.jpeg)
 
-Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day2)
-
-Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day3)
-
-Day4:[ACGAN](<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day4>)
-
-Day5:[WGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day5)
-
-Day6:[SRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day6)
-
-Day7:EBGAN
-
-Day8:[Attentive GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day8)
-
-Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day8)
-
-### Attention!
-
-**github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
-
-**原作者:陈扬,现就读与中国海洋大学计算机本科二年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
-
+![WechatIMG399](./WechatIMG400.jpeg)
