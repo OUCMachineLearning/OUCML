@@ -32,6 +32,18 @@ Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/O
 
 Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day10)
 
+Day11:cycleGAN
+
+Day12:DiscoGAN
+
+Day13:DualGAN
+
+Day14:Pix2Pix
+
+Day15:LSGAN 
+
+Day16:WGAN GP
+
 ### Attention!
 
 **github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
