@@ -9,3 +9,4 @@ GAN/Self_attention_GAN_tensorflow/samples/SAGAN_cifar10_hinge_128_128_True/SAGAN
 GAN/Self_attention_GAN_tensorflow/samples/SAGAN_cifar10_hinge_128_128_True/SAGAN_train_00_00500.png
 GAN/ESRGAN/
 GAN/SC-FEGAN/
+GAN/人脸还原SCFEGAN/ckpt/SC-FEGAN.ckpt.data-00000-of-00001

@@ -1,0 +1,7 @@
+INPUT_SIZE: 512
+BATCH_SIZE: 1
+
+GPU_NUM: 0
+
+# directories
+CKPT_DIR: './ckpt/SC-FEGAN.ckpt'
