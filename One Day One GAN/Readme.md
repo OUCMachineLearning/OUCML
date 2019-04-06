@@ -30,6 +30,8 @@ Day8:[Attentive GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One
 
 Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day8)
 
+Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day10)
+
 ### Attention!
 
 **github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
