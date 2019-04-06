@@ -84,7 +84,121 @@ ${\displaystyle \log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!} 
 
 ### 实现细节
 
+```python
+# Build and the 判别器 and 识别网络
+self.discriminator, self.auxilliary =self.build_disk_and_q_net()
+```
 
+
+
+```python
+# Build the generator
+self.generator = self.build_generator()
+
+# The generator takes noise and the target label as input
+# and generates the corresponding digit of that label
+gen_input = Input(shape=(self.latent_dim,))
+img = self.generator(gen_input)
+#生成器依赖标签信息
+
+```
+
+```python
+def build_generator(self):
+
+    model = Sequential()
+
+    model.add(Dense(128 * 7 * 7, activation="relu", input_dim=self.latent_dim))
+    model.add(Reshape((7, 7, 128)))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(UpSampling2D())
+    model.add(Conv2D(128, kernel_size=3, padding="same"))
+    model.add(Activation("relu"))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(UpSampling2D())
+    model.add(Conv2D(64, kernel_size=3, padding="same"))
+    model.add(Activation("relu"))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(Conv2D(self.channels, kernel_size=3, padding='same'))
+    model.add(Activation("tanh"))
+
+    gen_input = Input(shape=(self.latent_dim,))
+    img = model(gen_input)
+
+    model.summary()
+
+    return Model(gen_input, img)
+
+
+```
+
+生成器的输入是一个72维的向量,输出是一张图片
+
+---
+
+
+
+```python
+def build_disk_and_q_net(self):
+
+    img = Input(shape=self.img_shape)
+
+    # Shared layers between discriminator and recognition network
+    model = Sequential()
+    model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.img_shape, padding="same"))
+    model.add(LeakyReLU(alpha=0.2))
+    model.add(Dropout(0.25))
+    model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+    model.add(ZeroPadding2D(padding=((0,1),(0,1))))
+    model.add(LeakyReLU(alpha=0.2))
+    model.add(Dropout(0.25))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(Conv2D(256, kernel_size=3, strides=2, padding="same"))
+    model.add(LeakyReLU(alpha=0.2))
+    model.add(Dropout(0.25))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(Conv2D(512, kernel_size=3, strides=2, padding="same"))
+    model.add(LeakyReLU(alpha=0.2))
+    model.add(Dropout(0.25))
+    model.add(BatchNormalization(momentum=0.8))
+    model.add(Flatten())
+
+    img_embedding = model(img)
+
+    # Discriminator
+    validity = Dense(1, activation='sigmoid')(img_embedding)
+
+    # Recognition
+    q_net = Dense(128, activation='relu')(img_embedding)
+    label = Dense(self.num_classes, activation='softmax')(q_net)
+
+    # Return discriminator and recognition network
+    return Model(img, validity), Model(img, label)
+```
+
+判别器要判别真假,q_net 和要判别 label.
+
+```python
+def sample_generator_input(self, batch_size):
+    # Generator inputs
+    sampled_noise = np.random.normal(0, 1, (batch_size, 62))
+    sampled_labels = np.random.randint(0, self.num_classes, batch_size).reshape(-1, 1)
+    sampled_labels = to_categorical(sampled_labels, num_classes=self.num_classes)
+```
+
+噪声 Z 的输入包括高斯噪声和一个10维的 label-one-hot 向量.
+
+---
+
+其实写到这里,我发现了一点啊,他真的和 ACGAN 好像啊……
+
+![image-20190407011433732](https://ws1.sinaimg.cn/large/006tNc79ly1g1tf1c5b31j31980k0qby.jpg)
+
+像到什么程度,自行体会,不过说实话原理还是有所不同的,说实话,我很无语
+
+接下来继续填 semi-supervised GAN 的坑吧,最近self supervised GAN 出来了,行有余力可以看看.
+
+总感觉接下来要开 cycleGAN 系列了,这个有意思.看到这里了要是看官老爷觉得interesting,不如麻烦关注转发好看三连一波,你的每一点小小的鼓励都是对作者莫大的鼓舞鸭😄.
 
 
 
@@ -93,3 +207,11 @@ ${\displaystyle \log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!} 
 https://www.zhihu.com/question/24059517/answer/37430101
 
 https://blog.csdn.net/wspba/article/details/54808833 
+
+<https://www.jiqizhixin.com/articles/2018-10-29-21>
+
+<https://aistudio.baidu.com/aistudio/#/projectdetail/29156>
+
+<https://aistudio.baidu.com/aistudio/#/projectdetail/29156>
+
+<https://zh.wikipedia.org/zh-hant/%E4%BA%92%E4%BF%A1%E6%81%AF>
