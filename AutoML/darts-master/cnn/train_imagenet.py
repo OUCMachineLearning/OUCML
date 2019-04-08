@@ -173,7 +173,7 @@ def train(train_queue, model, criterion, optimizer):
   model.train()
 
   for step, (input, target) in enumerate(train_queue):
-    target = target.cuda(async=True)
+    target = target.cuda(non_blocking=True)
     input = input.cuda()
     input = Variable(input)
     target = Variable(target)
@@ -209,7 +209,7 @@ def infer(valid_queue, model, criterion):
 
   for step, (input, target) in enumerate(valid_queue):
     input = Variable(input, volatile=True).cuda()
-    target = Variable(target, volatile=True).cuda(async=True)
+    target = Variable(target, volatile=True).cuda(non_blocking=True)
 
     logits, _ = model(input)
     loss = criterion(logits, target)
