@@ -2,7 +2,7 @@
 
 Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do some scientific research in my spare time. Based on the current hot direction of artificial intelligence, I hope to share my research progress with **Generative adversarial network**
 
-嗨，我的名字是陈扬，我是中国海洋大学的二年级学生。我在业余时间做了一些科学研究。基于当前人工智能的热点方向，我希望与**生成对抗网络分享我的研究进展**
+嗨，我的名字是陈扬，我是中国海洋大学的二年级学生。我在业余时间做了一些科学研究。基于当前人工智能的热点方向，我希望与各位同学**生成对抗网络分享我的研究进展**
 
 ## 前言
 
@@ -45,8 +45,9 @@ Day15:LSGAN
 Day16:WGAN GP
 
 ### Attention!
+我用Typora 写的,github 不支持内嵌 LATEX 公式,如果有需要建议 fork 或者 clone 下来用typora 或者说别的支持内嵌公式的编辑器打开,以后会注意的,尽量使用截图.
 
-**github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN**>
+github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN>
 
 **原作者:陈扬,现就读与中国海洋大学计算机本科二年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
 

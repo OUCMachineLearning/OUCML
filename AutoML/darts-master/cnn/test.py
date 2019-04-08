@@ -82,7 +82,7 @@ def infer(test_queue, model, criterion):
 
   for step, (input, target) in enumerate(test_queue):
     input = Variable(input, volatile=True).cuda()
-    target = Variable(target, volatile=True).cuda(async=True)
+    target = Variable(target, volatile=True).cuda(non_blocking=True)
 
     logits, _ = model(input)
     loss = criterion(logits, target)
