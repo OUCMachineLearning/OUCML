@@ -244,10 +244,7 @@ def train(self, epochs, batch_size=128, sample_interval=50):
 ![image_1ct566r7419d7ai41rmaa6qqqt9.png-142.7kB][7]
 我们看得到,判别器分辨真假的能力接近1/2,相当于已经被生成器以假乱真了.
 
-### 结束语.
 
-在github上,有完整的gan.py代码,未来我还会出这一集的视频,在bilibili上播放,我希望能通过说的方式,带你从code的角度去理解复杂的生成对抗网络
-未来我还出一系列我们研究过程中运用到的对比试验的model,比如DCGAN,ACGAN,CGAN,SRGAN等欢迎大家持续支持我们的公众号.
 
 [1]: http://static.zybuluo.com/Team/mmbpgzozxzaesexm03rkvt3a/image_1ct4sdm7c171la761q1rf881aak9.png
 [2]: http://static.zybuluo.com/Team/lvg8hb8uip1yut64h5n8reh0/image_1ct4si11fu6o2lg1m6ub6110o6m.png
