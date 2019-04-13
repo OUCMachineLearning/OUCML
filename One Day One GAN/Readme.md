@@ -32,7 +32,7 @@ Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/O
 
 Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day10)
 
-Day11:cycleGAN
+Day11:[pytorch 可视化(1)](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day11)
 
 Day12:DiscoGAN
 
