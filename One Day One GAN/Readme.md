@@ -46,7 +46,7 @@ Day16:WGAN GP
 
 Day17:self-attention GAN
 
-Day18[:self-surprise GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day18)
+Day18[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day18)
 
 ### Attention!
 
