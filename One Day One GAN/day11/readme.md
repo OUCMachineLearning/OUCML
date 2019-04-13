@@ -2,7 +2,7 @@
 
 深度学习这几年伴随着硬件性能的进一步提升,人们开始着手于设计更深更复杂的神经网络,有时候我们在开源社区拿到网络模型的时候,做客可能 不会直接开源模型代码,而是给出一个模型的参数文件,当我们想要复现算法的时候,很可能就需要靠自己手动仿造源作者设计的神经网络进行搭建,为了方便我们设计网络,我结合了我最近的工作积累,给大家分享一些关于 pytorch 的网络可视化方法
 
-
+以下所有代码我已经开源:https://github.com/OUCMachineLearning/OUCML/blob/master/One%20Day%20One%20GAN/day11/pytorch_show_1.ipynb>
 
 ## pytorch-summary
 
