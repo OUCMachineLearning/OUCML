@@ -46,7 +46,11 @@ Day16:WGAN GP
 
 Day17:self-attention GAN
 
-Day18[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day18)
+Day18:[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day18)
+
+Day19:[联合子带学习的CliqueNet在小波域上的图像超分辨复原](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day19)
+
+Day20:[VAE系解纠缠：从VAE到βVAE，再到β-TCVAE](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day20)
 
 ### Attention!
 
