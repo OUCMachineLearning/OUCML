@@ -36,7 +36,7 @@ class DenseResidualBlock(nn.Module):
         self.b4 = block(in_features=4 * filters)
         self.b5 = block(in_features=5 * filters, non_linearity=False)
         self.blocks = [self.b1, self.b2, self.b3, self.b4, self.b5]
-
+    
     def forward(self, x):
         inputs = x
         for block in self.blocks:

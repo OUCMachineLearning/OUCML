@@ -52,40 +52,96 @@ ESRGAN的全名叫 **Enhanced Super-Resolution Generative Adversarial Networks**
 既然我们知道他的网络结构是这样子设计的,那么他的实现其实就很简单:
 
 ```python
-class RRDB_Net(nn.Module):
-    def __init__(self, in_nc, out_nc, nf, nb, gc=32, upscale=4, norm_type=None, act_type='leakyrelu', \
-            mode='CNA', res_scale=1, upsample_mode='upconv'):
-        super(RRDB_Net, self).__init__()
-        n_upscale = int(math.log(upscale, 2))
-        if upscale == 3:
-            n_upscale = 1
+class DenseResidualBlock(nn.Module):
+    """
+    The core module of paper: (Residual Dense Network for Image Super-Resolution, CVPR 18)
+    """
 
-        fea_conv = B.conv_block(in_nc, nf, kernel_size=3, norm_type=None, act_type=None)
-        rb_blocks = [B.RRDB(nf, kernel_size=3, gc=32, stride=1, bias=True, pad_type='zero', \
-            norm_type=norm_type, act_type=act_type, mode='CNA') for _ in range(nb)]
-        LR_conv = B.conv_block(nf, nf, kernel_size=3, norm_type=norm_type, act_type=None, mode=mode)
+    def __init__(self, filters, res_scale=0.2):
+        super(DenseResidualBlock, self).__init__()
+        self.res_scale = res_scale
 
-        if upsample_mode == 'upconv':
-            upsample_block = B.upconv_blcok
-        elif upsample_mode == 'pixelshuffle':
-            upsample_block = B.pixelshuffle_block
-        else:
-            raise NotImplementedError('upsample mode [%s] is not found' % upsample_mode)
-        if upscale == 3:
-            upsampler = upsample_block(nf, nf, 3, act_type=act_type)
-        else:
-            upsampler = [upsample_block(nf, nf, act_type=act_type) for _ in range(n_upscale)]
-        HR_conv0 = B.conv_block(nf, nf, kernel_size=3, norm_type=None, act_type=act_type)
-        HR_conv1 = B.conv_block(nf, out_nc, kernel_size=3, norm_type=None, act_type=None)
+        def block(in_features, non_linearity=True):
+            layers = [nn.Conv2d(in_features, filters, 3, 1, 1, bias=True)]
+            if non_linearity:
+                layers += [nn.LeakyReLU()]
+            return nn.Sequential(*layers)
 
-        self.model = B.sequential(fea_conv, B.ShortcutBlock(B.sequential(*rb_blocks, LR_conv)),\
-            *upsampler, HR_conv0, HR_conv1)
+        self.b1 = block(in_features=1 * filters)
+        self.b2 = block(in_features=2 * filters)
+        self.b3 = block(in_features=3 * filters)
+        self.b4 = block(in_features=4 * filters)
+        self.b5 = block(in_features=5 * filters, non_linearity=False)
+        self.blocks = [self.b1, self.b2, self.b3, self.b4, self.b5]
 
     def forward(self, x):
-        x = self.model(x)
+        inputs = x
+        for block in self.blocks:
+            out = block(inputs)
+            inputs = torch.cat([inputs, out], 1)
+        return out.mul(self.res_scale) + x
+
+
 ```
 
+先定义了DenseResidualBlock块,我们可以看出来作者在里面移除了 BN 层再把b1-b5 密集连接起来.
 
+```python
+class ResidualInResidualDenseBlock(nn.Module):
+    def __init__(self, filters, res_scale=0.2):
+        super(ResidualInResidualDenseBlock, self).__init__()
+        self.res_scale = res_scale
+        self.dense_blocks = nn.Sequential(
+            DenseResidualBlock(filters), DenseResidualBlock(filters), DenseResidualBlock(filters)
+        )
+
+    def forward(self, x):
+        return self.dense_blocks(x).mul(self.res_scale) + x
+
+```
+
+再三个DRB 块级联成一个 RDB 块.
+
+```python
+class GeneratorRRDB(nn.Module):
+    def __init__(self, channels, filters=64, num_res_blocks=16, num_upsample=2):
+        super(GeneratorRRDB, self).__init__()
+
+        # First layer
+        self.conv1 = nn.Conv2d(channels, filters, kernel_size=3, stride=1, padding=1)
+        # Residual blocks
+        self.res_blocks = nn.Sequential(*[ResidualInResidualDenseBlock(filters) for _ in range(num_res_blocks)])
+        # Second conv layer post residual blocks
+        self.conv2 = nn.Conv2d(filters, filters, kernel_size=3, stride=1, padding=1)
+        # Upsampling layers
+        upsample_layers = []
+        for _ in range(num_upsample):
+            upsample_layers += [
+                nn.Conv2d(filters, filters * 4, kernel_size=3, stride=1, padding=1),
+                nn.LeakyReLU(),
+                nn.PixelShuffle(upscale_factor=2),
+            ]
+        self.upsampling = nn.Sequential(*upsample_layers)
+        # Final output block
+        self.conv3 = nn.Sequential(
+            nn.Conv2d(filters, filters, kernel_size=3, stride=1, padding=1),
+            nn.LeakyReLU(),
+            nn.Conv2d(filters, channels, kernel_size=3, stride=1, padding=1),
+        )
+
+    def forward(self, x):
+        out1 = self.conv1(x)
+        out = self.res_blocks(out1)
+        out2 = self.conv2(out)
+        out = torch.add(out1, out2)
+        out = self.upsampling(out)
+        out = self.conv3(out)
+        return out
+
+
+```
+
+生成器再根据num_res_blocks变量控制 RDB 块的数量.
 
 #### 对损失函数的改进
 
@@ -103,7 +159,23 @@ class RRDB_Net(nn.Module):
 
 ![image-20190301151456042](https://ws1.sinaimg.cn/large/006tKfTcly1g0nbeboqc1j3153027mxd.jpg)求MSE的操作是通过对$mini-batch$中的所有数据求平均得到的，$x_f$是原始低分辨图像经过生成器以后的图像,由于对抗的损失包含了$x_r$和$x_f$,所以生成器受益于对抗训练中的生成数据和实际数据的梯度，这种调整会使得网络学习到更尖锐的边缘和更细节的纹理。
 
-因为作者放放出来的代码比较emmmmmm,没找到具体的训练部分哎……
+看起来这个原理十分的高大上.
+
+```python
+pred_real = discriminator(imgs_hr)
+pred_fake = discriminator(gen_hr.detach())
+
+# Adversarial loss for real and fake images (relativistic average GAN)
+loss_real = criterion_GAN(pred_real - pred_fake.mean(0, keepdim=True), valid)
+loss_fake = criterion_GAN(pred_fake - pred_real.mean(0, keepdim=True), fake)
+
+# Total loss
+loss_D = (loss_real + loss_fake) / 2
+
+
+```
+
+其实就加多两行代码的事情….
 
 #### 对感知损失的改进
 
@@ -143,4 +215,94 @@ for k, v_PSNR in net_PSNR.items():
     v_ESRGAN = net_ESRGAN[k]
     net_interp[k] = (1 - alpha) * v_PSNR + alpha * v_ESRGAN
 ```
+
+#### 训练细节
+
+```python
+# ----------
+#  Training
+# ----------
+
+for epoch in range(opt.epoch, opt.n_epochs):
+    for i, imgs in enumerate(dataloader):
+
+        batches_done = epoch * len(dataloader) + i
+
+        # Configure model input
+        imgs_lr = Variable(imgs["lr"].type(Tensor))
+        imgs_hr = Variable(imgs["hr"].type(Tensor))
+
+        # Adversarial ground truths
+        valid = Variable(Tensor(np.ones((imgs_lr.size(0), *discriminator.output_shape))), requires_grad=False)
+        fake = Variable(Tensor(np.zeros((imgs_lr.size(0), *discriminator.output_shape))), requires_grad=False)
+
+        # ------------------
+        #  Train Generators
+        # ------------------
+
+        optimizer_G.zero_grad()
+
+        # Generate a high resolution image from low resolution input
+        gen_hr = generator(imgs_lr)
+
+        # Measure pixel-wise loss against ground truth
+        loss_pixel = criterion_pixel(gen_hr, imgs_hr)
+
+        if batches_done < opt.warmup_batches:
+            # Warm-up (pixel-wise loss only)
+            loss_pixel.backward()
+            optimizer_G.step()
+            print(
+                "[Epoch %d/%d] [Batch %d/%d] [G pixel: %f]"
+                % (epoch, opt.n_epochs, i, len(dataloader), loss_pixel.item())
+            )
+            continue
+
+        # Extract validity predictions from discriminator
+        pred_real = discriminator(imgs_hr).detach()
+        pred_fake = discriminator(gen_hr)
+
+        # Adversarial loss (relativistic average GAN)
+        loss_GAN = criterion_GAN(pred_fake - pred_real.mean(0, keepdim=True), valid)
+
+        # Content loss
+        gen_features = feature_extractor(gen_hr)
+        real_features = feature_extractor(imgs_hr).detach()
+        loss_content = criterion_content(gen_features, real_features)
+
+        # Total generator loss
+        loss_G = loss_content + opt.lambda_adv * loss_GAN + opt.lambda_pixel * loss_pixel
+
+        loss_G.backward()
+        optimizer_G.step()
+
+        # ---------------------
+        #  Train Discriminator
+        # ---------------------
+
+        optimizer_D.zero_grad()
+
+        pred_real = discriminator(imgs_hr)
+        pred_fake = discriminator(gen_hr.detach())
+
+        # Adversarial loss for real and fake images (relativistic average GAN)
+        loss_real = criterion_GAN(pred_real - pred_fake.mean(0, keepdim=True), valid)
+        loss_fake = criterion_GAN(pred_fake - pred_real.mean(0, keepdim=True), fake)
+
+        # Total loss
+        loss_D = (loss_real + loss_fake) / 2
+
+        loss_D.backward()
+        optimizer_D.step()
+```
+
+在训练的过程中,为了使得 G 和 D 能够 平衡训练,我们先引入了一个一个 warmup的过程,在 warmup 的训练过程中,我们首先只是考虑对 G 进行训练,训练的时候只对生成gen_hr 和 img_hr 计算 L1loss,等到生成器能够有一定的学习能力的时候,我们引入 VGGloss 和对抗 loss.在训练判别器的时候,我们把原来判别真假的 loss 改成判别相对真假的 loss.
+
+在实际的实验的过程中,网络大概跑完 5 个 epoch 就可以达到不错的复原效果.
+
+### 总结
+
+实际上 ESRGAN 相对于 SRGAN 还是做出了不少改进的,同时让我刚到眼前一亮的是他在训练的过程中加入了不少训练的技巧,是的生成器和判别器的学习更加的平衡.
+
+不过带来的问题也是存在的,就是 G生成器的网络参数相对于 SRGAN,计算量要多很多,如果想要进一步的运用到工程实践中,我的建议还是要考虑网络的精简.
 
