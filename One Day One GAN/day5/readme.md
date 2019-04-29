@@ -39,16 +39,16 @@ WGAN,这篇文章我相信对于非科班出身或者说数学知识相对较弱
 
 
 而在 WGAN 中,我们对这个 KL 散度进行了改进,该文章围绕 Wasserstein 距离对两个分布p(X),q(X)做出如下定义:
-$$
-\begin{equation}\mathcal{W}[p,q]=\inf_{\gamma\in \Pi[p,q]} \iint \gamma(\boldsymbol{x},\boldsymbol{y}) d(\boldsymbol{x},\boldsymbol{y}) d\boldsymbol{x}d\boldsymbol{y}\label{eq:wd}\end{equation}
-$$
+
+![image-20190428121136284](https://ws2.sinaimg.cn/large/006tNc79ly1g2i81gba70j318g04omyp.jpg)
+
 ![image-20190331123200062](https://ws4.sinaimg.cn/large/006tKfTcly1g1lva1f13kj30f70onae4.jpg)
 
 (该部分转载于大神苏剑林:<https://kexue.fm/archives/6280>)
 
 ### 话锋一转-代码实现
 
-我们从现在看这个可能还是觉得有些困难,包括在实现 WGAN 的过程中涉及到了 loss 函数的反向传播需要满足$Lipschitz连续​$等等问题,我也是找了很多的博客等等,直接了当地总结了如何在 GAN的基础上实现 WGAN:
+我们从现在看这个可能还是觉得有些困难,包括在实现 WGAN 的过程中涉及到了 loss 函数的反向传播需要满足$Lipschitz连续$等等问题,我也是找了很多的博客等等,直接了当地总结了如何在 GAN的基础上实现 WGAN:
 
 ![image-20190331124000273](https://ws1.sinaimg.cn/large/006tKfTcly1g1lvid8bfjj310k0lbqtl.jpg)
 
