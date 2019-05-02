@@ -14,7 +14,7 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 大名鼎鼎的 cycleGAN 就不用我多介绍了吧,那个大家每一次一讲到深度学习,总有人会放出来的那张图片,马变斑马的那个,就是出自于大名鼎鼎的 cycleGAN 了
 
-![horse2zebra](/Users/Macbook/Downloads/horse2zebra.gif)
+![horse2zebra](./cyclegan/horse2zebra.gif)
 
 ![68747470733a2f2f6a756e79616e7a2e6769746875622e696f2f4379636c6547414e2f696d616765732f7465617365725f686967685f7265732e6a7067](https://ws2.sinaimg.cn/large/006tNc79ly1g2n89418lmj31le0rlqi1.jpg)
 
