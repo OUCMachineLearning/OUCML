@@ -34,9 +34,9 @@ Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Da
 
 Day11:[pytorch 可视化(1)](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day11)
 
-Day12:DiscoGAN
+Day12:[BEGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day12)
 
-Day13:DualGAN
+Day13:[cycleGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day13)
 
 Day14:Pix2Pix
 
