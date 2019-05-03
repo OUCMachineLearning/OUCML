@@ -48,8 +48,7 @@ for image_path in glob.glob(opt.image_path+'*.*'):
     # Upsample image
     with torch.no_grad():
         sr_image = generator(image_tensor).cpu()
-
     # Save image
     fn = image_path.split("/")[-1]
     img_grid = torch.cat((image_tensor.cpu(),sr_image), 3)
-    save_image(img_grid, f"images/outputs/sr-{opt.checkpoint_model[-5]}-{fn[:-4]}.tif",nrow=1,normalize=True)
+    save_image(img_grid, f"images/outputs/{fn}",nrow=1,normalize=True)
