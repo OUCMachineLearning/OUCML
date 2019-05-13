@@ -107,14 +107,14 @@ for epoch in range(num_epochs):
 		recon_batch, mu, logvar = model(img)
 		loss = loss_function(recon_batch, img, mu, logvar)
 		loss.backward()
-		train_loss += loss.data[0]
+		train_loss += loss.item()
 		optimizer.step()
 		if batch_idx % 100 == 0:
 			print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
 				epoch,
 				batch_idx * len(img),
 				len(dataloader.dataset), 100. * batch_idx / len(dataloader),
-				loss.data[0] / len(img)))
+				loss.item() / len(img)))
 
 	print('====> Epoch: {} Average loss: {:.4f}'.format(
 		epoch, train_loss / len(dataloader.dataset)))
