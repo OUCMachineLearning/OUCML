@@ -87,4 +87,3 @@ Overall architecture of our STGAN. Taking the image above as an example, in the 
 ![image-20190512234612097](https://ws2.sinaimg.cn/large/006tNc79ly1g2yyshisqpj312o054gmg.jpg)
 
 p(Z)p(Z)是标准正态分布，这就意味着，隐参量符合了正态分布，这样就可以放心地从这个分布中随机采样，保证了生成能力。
-

@@ -5,7 +5,8 @@
 ## 报告人:陈扬
 ## slides制作:陈扬
 ## 代码:陈扬
-    
+## github:https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day15
+
 ---
 
 ## 什么是编码?
