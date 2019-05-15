@@ -58,19 +58,19 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 一般地，两个离散随机变量 X 和 Y 的互信息可以定义为：
 
-$${\displaystyle I(X;Y)=\sum _{y\in Y}\sum _{x\in X}p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)},\,\!}$$
+<br><br>${\displaystyle I(X;Y)=\sum _{y\in Y}\sum _{x\in X}p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)},\,\!}$<br><br>
 
 其中 p(x,y) 是 X 和 Y 的联合概率分布函数，而$ {\displaystyle p(x)} p(x)   和    {\displaystyle p(y)} p(y) $分别是 X 和 Y 的边缘概率分布函数。
 
-$$ I(X;Y)=\sum _{{y\in Y}}\sum _{{x\in X}}p(x,y)\log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)},\,\!$$
+<br><br>$ I(X;Y)=\sum _{{y\in Y}}\sum _{{x\in X}}p(x,y)\log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)},\,\!$<br><br>
 
 在连续随机变量的情形下，求和被替换成了二重定积分：
 
-$${\displaystyle I(X;Y)=\int _{Y}\int _{X}p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}\;dx\,dy,}$$
+<br><br>${\displaystyle I(X;Y)=\int _{Y}\int _{X}p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}\;dx\,dy,}$<br><br>
 
 其中 p(x,y) 当前是 X 和 Y 的联合概率密度函数，而$ {\displaystyle p(x)} p(x)    和    {\displaystyle p(y)} p(y) $分别是 X 和 Y 的边缘概率密度函数。
 
-$$ I(X;Y)=\int _{Y}\int _{X}p(x,y)\log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)}\;dx\,dy,$$
+<br><br>$ I(X;Y)=\int _{Y}\int _{X}p(x,y)\log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)}\;dx\,dy,$<br><br>
 
 如果对数以 2 为基底，互信息的单位是bit。
 
@@ -78,7 +78,7 @@ $$ I(X;Y)=\int _{Y}\int _{X}p(x,y)\log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\righ
 
 互信息是 X 和 Y 的联合分布相对于假定 X 和 Y 独立情况下的联合分布之间的内在依赖性。 于是互信息以下面方式度量依赖性：I(X; Y) = 0 当且仅当 X 和 Y 为独立随机变量。从一个方向很容易看出：当 X 和 Y 独立时，p(x,y) = p(x) p(y)，因此：
 
-$${\displaystyle \log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!} \log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!$$
+<br><br>${\displaystyle \log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!} \log {\left({\frac  {p(x,y)}{p(x)\,p(y)}}\right)}=\log 1=0.\,\!$<br><br>
 
 此外，互信息是非负的，而且是对称的（即 I(X;Y) = I(Y;X)）。
 
