@@ -71,17 +71,82 @@ $$
 
 ---
 
-$f^l_{enc}$为编码器第l层输出，$s^{l+1}$为数据编码在$l+1$层的隐藏状态，隐藏状态$ŝ^{l+1}$则是结合了$Att^{diff}$得到的：
-
-ŝ l+1=Wt∗T[sl+1,Attdiff]s^l+1=Wt∗ßT[sl+1,Attdiff]
-
+$f^l_{enc}$为编码器第l层输出，$s^{l+1}$为数据编码在$l+1$层的隐藏状态，隐藏状态$ŝ^{l+1}$则是结合了$Att^{diff}$得到的：                
+$$
+ŝ^{l+1}=W_{t∗T}[s^{l+1},Att_{diff}]
+$$
 其中[⋅,⋅][⋅,⋅]表示为concatenation操作，∗T∗T为转置卷积，然后，STU采用GRU的数学模型来更新隐藏状态slsl和转换后的编码器特征fltftl:
 
-rl=σ(Wr∗[flenc,ŝ l+1]),zl=σ(Wz∗[flenc,ŝ l+1]),sl=rl∘ŝ l+1rl=σ(Wr∗[fencl,s^l+1]),zl=σ(Wz∗[fencl,s^l+1]),sl=rl∘s^l+1
+$$
+r^l=σ(W_r∗[f^l_{enc},ŝ^{l+1}]),z^l=σ(W_z∗[f^l_{enc},ŝ^{l+1}]),s^l=r^l∘ŝ^{l+1}
+$$
 
-f̂ lt=tanh(Wh∗[flenc,sl]),flt=(1−zl)∘ŝ l+1+zl∘f̂ ltf^tl=tanh(Wh∗[fencl,sl]),ftl=(1−zl)∘s^l+1+zl∘f^tl
+$$
+f̂^l_t=tanh(W_h∗[f^l_{enc},s^l]),f^l_t=(1−z^l)∘ŝ^{l+1}+z^l∘f̂^l_t
+$$
 
-其中∗∗表示卷积运算，∘∘表示逐项乘积，σ(⋅)σ(⋅)表示sigmoid函数。复位门rlrl和更新门zlzl的引入允许以选择性方式控制隐藏状态，差异属性向量和编码器特征。输出fltftl提供了一种自适应的编码器特征传输方法及其与隐藏状态的组合。
+其中∗表示卷积运算，∘表示逐项乘积，σ(⋅)表示sigmoid函数。复位门$r^l$和更新门$z^l$的引入允许以选择性方式控制隐藏状态，差异属性向量和编码器特征。输出$f_t^l$提供了一种自适应的编码器特征传输方法及其与隐藏状态的组合。
 
 选择性传输单元（STU）说白了就是在GRU的结构上实现的，差分标签控制下的编码特征的选择。
+
+```python
+if use_stu:
+            self.stu = nn.ModuleList()
+            for i in reversed(range(self.n_layers - 1 - self.shortcut_layers,\
+                                    self.n_layers - 1)):
+                self.stu.append(ConvGRUCell(self.n_attrs, conv_dim * 2 ** i, \
+                                	conv_dim * 2 ** i, stu_kernel_size))
+```
+
+---
+
+# 模型结构
+
+有了上述的分析，我们再看模型的结构则是比较容易理解了：
+
+![img](http://ww1.sinaimg.cn/large/006tNc79ly1g3h6qdvfv9j30qn0b8whv.jpg)
+
+整个模型比较简单，在编码器和解码器过程中，加入$STU$选择单元，从而获得人脸属性编辑后的输出。编码器的输入端包括源图x和差分属性标签$Att_{diff}$。对于判别器，也是判别生成器输出真假和对应的属性标签。对抗损失采用WGAN-GP来实现生成优化，对应着$L_{D_{adv}}$,$L_{G_{adv}}$。对于属性标签和生成器的属性优化通过源真实样本和标签优化判别器，再通过判别器去判别目标生成的属性结果来优化生成器：
+
+![image-20190528180335754](http://ww3.sinaimg.cn/large/006tNc79ly1g3h6sxijsmj30qh0ac3zh.jpg)
+
+----
+
+![image-20190528180316991](http://ww1.sinaimg.cn/large/006tNc79ly1g3h6slsg52j30qh0ac3zh.jpg)
+
+---
+
+# 实验
+
+CelebA数据集包含裁剪到178×218的202,599个对齐的面部图像，每个图像有40个带/不带属性标签。图像分为训练集，验证集和测试集，文章从验证集中获取1,000张图像以评估训练过程，使用验证集的其余部分和训练集来训练STGAN模型，并利用测试集进行性能评估。实验考虑13种属性，包括秃头，爆炸，黑发，金发，棕色头发，浓密眉毛，眼镜，男性，嘴微微开口，小胡子，无胡子，苍白皮肤和年轻，实验中，每个图像的中心170×170区域被裁剪并通过双三次插值调整为128×128。
+
+---
+
+![img](http://ww3.sinaimg.cn/large/006tNc79ly1g3h6udndn8j30qm0dmdts.jpg)
+
+定量评估上，文章从两个方面评估属性编辑的性能，即图像质量和属性生成准确性。图像质量上，保持目标属性向量与源图像属性相同，得到了PSNR / SSIM结果：
+
+![img](http://ww1.sinaimg.cn/large/006tNc79ly1g3h6ujxoorj30do030dfw.jpg)
+
+吐槽:PSNR 和 SSIM 在这里当做评价指标简直是瞎扯淡…...
+
+---
+
+![STGAN8](http://ww4.sinaimg.cn/large/006tNc79ly1g3h6vpw0zhj30fj0ao74y.jpg)
+
+这个指标还行…...
+
+---
+
+![STGAN9](http://ww3.sinaimg.cn/large/006tNc79ly1g3h6wcqf92j30fh0dowog.jpg)
+
+实验在用户的选择测试上也取得了最佳效果，Ablation Study实验上也证实了模型的每一部分的优势和必要。最后放一张STGAN在图像季节转换的实验效果：
+
+---
+
+# 总结
+
+文章研究了选择性传输视角下任意图像属性编辑的问题，并通过在编码器 - 解码器网络中结合差分属性向量和选择性传输单元（STU）来提出STGAN模型。通过将差异属性向量而不是目标属性向量作为模型输入，STGAN可以专注于编辑要改变的属性，这极大地提高了图像重建质量，增强了属性的灵活转换。
+
+---
 
