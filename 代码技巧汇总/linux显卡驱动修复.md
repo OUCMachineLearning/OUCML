@@ -16,7 +16,8 @@ chomod 777 NVIDIA-Linux-x86_64-xxx.xx.run
 卸载原驱动
 
 ```
-sudo apt-get remove --purge nvidia*  # 提示有残留可以接 sudo apt autoremove
+sudo apt-get remove --purge nvidia*  # 提示有残留可以接 
+sudo apt autoremove
 1
 ```
 
@@ -30,8 +31,8 @@ sudo service lightdm stop
 运行安装程序
 
 ```
-sudo ./NVIDIA-Linux-x86_64-390.77.run
-1
+sudo ./NVIDIA-Linux-x86_64-375.66.run 
+
 ```
 
 安装后再重启显示
