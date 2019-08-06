@@ -1,0 +1,9 @@
+numpy
+scipy
+matplotlib
+seaborn
+pandas
+keras
+tensorflow
+pydot
+ipywidgets
