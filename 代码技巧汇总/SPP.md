@@ -1,137 +1,380 @@
-## [全连接层的好伴侣：空间金字塔池化（SPP） || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/64510297)ß
+pytorch 技巧收集
 
-> 原论文地址：
-> [Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1406.4729)
+# 使用 Spatial Pyramid Pooling 让 CNN 接受可变尺寸的图像
 
-## **本文结构**
+<https://oidiotlin.com/sppnet-tutorial/>
 
-1. **SSPNet的动机**
-2. **SPP Layer的实现**
-3. **SPP有啥好处**
-4. **SPPNet用于图像分类**
-5. **SPPNet用于物体检测**
+### 目录
 
-## **一、SSPNet的动机**
+- [传统 CNN 的弊端](https://oidiotlin.com/sppnet-tutorial/#technical-issue)
+- [SPP-Net 概述](https://oidiotlin.com/sppnet-tutorial/#sppnet-overview)
+- [SPP-Net 结构细节](https://oidiotlin.com/sppnet-tutorial/#sppnet-architecture)
+- [SPP-Net 训练方法](https://oidiotlin.com/sppnet-tutorial/#sppnet-training)
+- [在 pytorch 框架中实现 SPP](https://oidiotlin.com/sppnet-tutorial/#pytorch-implementation)
 
-一般而言，对于一个CNN模型，可以将其分为两个部分：
+参考论文：[Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition](https://arxiv.org/pdf/1406.4729.pdf)
 
-1. 前面包含卷积层、激活函数层、池化层的特征提取网络，下称CNN_Pre
-2. 后面的全连接网络，下称CNN_Post
+### 传统 CNN 的弊端
 
-许多CNN模型都对输入的图片大小有要求，实际上CNN_Pre对输入的图片没有要求，可以简单认为其将图片缩小了固定的倍数，而CNN_Post对输入的维度有要求，简而言之，限制输入CNN模型的图片尺寸是为了迁就CNN_Post。
+在传统 CNN 中，由于 Fully-Connected 层的存在，输入图像的尺寸受到了严格限制。通常情况下，我们需要对原始图片进行**裁剪（crop）**或**变形（warp）**的操作来调整其尺寸使其适配于 CNN。然而裁剪过的图片可能包含不了所需的所有信息，而改变纵横比的变形操作也可能会使关键部分产生非期望的形变。由于图片内容的丢失或失真，模型的准确度会受到很大的影响。![image-20190421103723218](https://ws1.sinaimg.cn/large/006tNc79ly1g2a1zc9wl1j31tg0g2b10.jpg)
 
+上图中分别表现了两种 resize 的方法：裁剪（左）、变形（右）。它们对原图都造成了非期望的影响。
 
+### SPP-Net 概述
 
-而本文的立意就在于，找到一种合适的方式，无论CNN_Pre输出的feature maps尺寸是怎样，都能输出固定的维度传给CNN_Post。如下图，而给出的方案即SPP：空间金字塔池化
+从 CNN 的结构来看，我们需要让图像在进入 FC 层前就将尺度固定到指定大小。通过修改卷积层或池化层参数可以改变图片大小，其中池化层不具有学习功能，其参数不会随着训练过程变化，自然而然承担起改变 spatial size 的工作。我们在第一个 FC 层前加入一个特殊的池化层，其参数是随着输入大小而成比例变化的。![image-20190421103738697](https://ws4.sinaimg.cn/large/006tNc79ly1g2a1zk0uaxj31d207cwg6.jpg)
 
-![img](https://ws1.sinaimg.cn/large/006tNc79ly1g2pa0okplqj30go0ah0ul.jpg)
+图1. 使用 crop 或 warp 方法的 CNN 的层级结构。图2. 在卷积层与第一个全连接层之间加入 SPP 层。
 
+SPP-Net 中有若干个并行的池化层，将卷积层的结果 [w×h×d][w×h×d] 池化成 [1×1],[2×2],[4×4],⋯[1×1],[2×2],[4×4],⋯ 的一层层结果，再将其所有结果与 FC 层相连。
 
+![image-20190421103805080](https://ws4.sinaimg.cn/large/006tNc79ly1g2a200j1ixj30jg08xdit.jpg)
 
-## **二、SPP Layer的实现**
+当输入为任意大小的图片时，我们可以随意进行卷积、池化，在 FC 层之前，通过 SPP 层，将图片抽象出固定大小的特征（即多尺度特征下的固定特征向量抽取）。
 
-> Pytorch 实现参考：
-> [https://github.com/GitHberChen/Pytorch-Implement-of-Papers/blob/master/SPP_layer.py](https://link.zhihu.com/?target=https%3A//github.com/GitHberChen/Pytorch-Implement-of-Papers/blob/master/SPP_layer.py)
+### SPP-Net 结构细节
 
-```python3
-import math
-import torch
-from torch import nn
-# https://github.com/yueruchen/sppnet-pytorch/blob/master/spp_layer.py
+![image-20190421103853981](https://ws1.sinaimg.cn/large/006tNc79ly1g2a20v0c2gj31130ok7ch.jpg)
 
+结构如上所示，已知输入 conv5 的大小是 [w×h×d][w×h×d]，SPP 中某一层输出结果大小为 [n×n×d][n×n×d]，那么如何设定该层的参数呢？
 
-def spatial_pyramid_pool(self, previous_conv, num_sample, previous_conv_size, out_pool_size):
-    '''
-    previous_conv: a tensor vector of previous convolution layer
-    num_sample: an int number of image in the batch
-    previous_conv_size: an int vector [height, width] of the matrix features size of previous convolution layer
-    out_pool_size: a int vector of expected output size of max pooling layer
+- **感受野大小** [wr×hr][wr×hr]：wr=⌈wn⌉wr=⌈wn⌉，hr=⌈hn⌉hr=⌈hn⌉
+- **步长** (sw,sh)(sw,sh)：sw=⌊wn⌋sw=⌊wn⌋，sh=⌊hn⌋sh=⌊hn⌋
 
-    returns: a tensor vector with shape [1 x n] is the concentration of multi-level pooling
-    '''
-    # print(previous_conv.size())
-    for i in range(len(out_pool_size)):
-        # print(previous_conv_size)
-        h_wid = int(math.ceil(previous_conv_size[0] / out_pool_size[i]))
-        w_wid = int(math.ceil(previous_conv_size[1] / out_pool_size[i]))
-        h_pad = (h_wid * out_pool_size[i] - previous_conv_size[0] + 1) / 2
-        w_pad = (w_wid * out_pool_size[i] - previous_conv_size[1] + 1) / 2
-        maxpool = nn.MaxPool2d((h_wid, w_wid), stride=(h_wid, w_wid), padding=(h_pad, w_pad))
-        x = maxpool(previous_conv)
-        if (i == 0):
-            spp = x.view(num_sample, -1)
-            # print("spp size:",spp.size())
-        else:
-            # print("size:",spp.size())
-            spp = torch.cat((spp, x.view(num_sample, -1)), 1)
-    return spp
+假设输入是 [30×42×256][30×42×256]，对于 SPP 中 [4×4][4×4] 的层而言，其：
+
+- 感受野大小应为 [⌈304⌉×⌈424⌉]=[8×11][⌈304⌉×⌈424⌉]=[8×11]
+- 步长应为 (⌊304⌋,⌊424⌋)=(7,10)(⌊304⌋,⌊424⌋)=(7,10)
+
+最后再将 SPP 中所有层的池化结果（池化操作通常是取感受野内的 max）变成 1 维向量，并与 FC 层中的神经元连接。
+
+如上图中的 SPP 有三层([1×1],[2×2],[4×4][1×1],[2×2],[4×4])，则通过 SPP 后的特征有 (1+4+16)×256(1+4+16)×256 个。
+
+### SPP-Net 训练方法
+
+虽然使用了 SPP，理论上可以直接用变尺度的图像集作为输入进行训练，但是常用的一些框架（如 CUDA-convnet、Caffe等）在底层实现中更适合固定尺寸的计算（效率更高）。原论文中提及了两种训练方法：
+
+- Single-Size：将所有的图片固定到同一尺度。
+- Multi-Size：将原图片通过 crop 得到某一尺度 A，再把 A 通过 warp 放缩成更小的尺寸 B。之后用 A 尺度训练一个 epoch，再用 B 尺度训练一个 epoch，交替迭代。
+
+由何凯明等人的实验结果可以发现，采用 Multi-Size 方法训练得到的模型错误率更低，且收敛速度更快。
+
+### 在 pytorch 框架中实现 SPP
+
+```python
+class SpatialPyramidPool2D(nn.Module):
+    """
+    Args:
+        out_side (tuple): Length of side in the pooling results of each pyramid layer. 
+    
+    Inputs:
+        - `input`: the input Tensor to invert ([batch, channel, width, height])
+    """
+    def __init__(self, out_side):
+        super(SpatialPyramidPool2D, self).__init__()
+        self.out_side = out_side
+    
+    def forward(self, x):
+        out = None
+        for n in self.out_side:
+            w_r, h_r = map(lambda s: math.ceil(s/n), x.size()[2:])    # Receptive Field Size
+            s_w, s_h = map(lambda s: math.floor(s/n), x.size()[2:])   # Stride
+            max_pool = nn.MaxPool2d(kernel_size=(w_r, h_r), stride=(s_w, s_h))
+            y = max_pool(x)
+            if out is None:
+                out = y.view(y.size()[0], -1)
+            else:
+                out = torch.cat((out, y.view(y.size()[0], -1)), 1)
+        return out
 ```
 
+可以在模型中插入该模块，如：
 
+```python
+nn.Sequential(
+    nn.Conv2d(
+        in_channels=1,
+        out_channels=16,
+        kernel_size=5,
+        stride=1,
+        padding=2,
+    ),
+    nn.ReLU(),
+    SpatialPyramidPool2D(out_side=(1,2,4))
+)
+```
 
-SPP的本质就是多层maxpool，只不过为了对于不同尺寸大小 ![a\times a](https://www.zhihu.com/equation?tex=a\times+a) 的featur map 生成固定大小 ![n\times n](https://www.zhihu.com/equation?tex=n\times+n) 的的输出，那么 ![pool_{n\times n}](https://www.zhihu.com/equation?tex=pool_{n\times+n}) 的滑窗win大小，以及步长str都要作自适应的调整：
+# 在 pytorch 中建立自己的图片数据集
 
-![win = ceil(https://www.zhihu.com/equation?tex=win+%3D+ceil(a%2Fn)+\\+str%3Dfloor(a%2Fn)) \\ str=floor(a/n)](https://www.zhihu.com/equation?tex=win+%3D+ceil%28a%2Fn%29+%5C%5C+str%3Dfloor%28a%2Fn%29)
+### 目录
 
-ceil、floor分别表示上取整、下取整。
+- [图片文件在同一目录下](https://oidiotlin.com/create-custom-dataset-in-pytorch/#one-directory)
+- [图片文件在不同目录下](https://oidiotlin.com/create-custom-dataset-in-pytorch/#multi-directories)
 
-然后多个不同固定输出尺寸的 ![Pool](https://www.zhihu.com/equation?tex=Pool) 组合在一起就构成了SPP Layer，在论文中就用了 ![pool_{5\times 5}](https://www.zhihu.com/equation?tex=pool_{5\times+5})、![pool_{4\times 4}](https://www.zhihu.com/equation?tex=pool_{4\times+4})、![pool_{3\times 3}](https://www.zhihu.com/equation?tex=pool_{3\times+3})、![pool_{2\times 2}](https://www.zhihu.com/equation?tex=pool_{2\times+2})、![pool_{1\times 1}](https://www.zhihu.com/equation?tex=pool_{1\times+1})的组合，对于尺寸为 ![(https://www.zhihu.com/equation?tex=(c%2Ca%2Ca))](https://www.zhihu.com/equation?tex=%28c%2Ca%2Ca%29) 的feature maps，该组合的输出为 ![(https://www.zhihu.com/equation?tex=(c%2C50))](https://www.zhihu.com/equation?tex=%28c%2C50%29)
+------
 
-![img](https://ws2.sinaimg.cn/large/006tNc79ly1g2pa0s91w9j30go0e2764.jpg)
+通常情况下，待处理的图片数据有两种存放方式：
 
+- 所有图片在**同一目录**下，另有一份文本文件记录了标签。
+- 不同标签的图片放在**不同目录**下，文件夹名就是标签。
 
+对于这两种情况，我们有不同的解决方法。
 
+### 图片文件在同一目录下
 
+假设在 `./data/` 目录下有所需的所有的图片，以及一份标记了图片标签的文本文件（列为图片路径+标签）`./labels.txt`
 
+```plain-text
+./data/IZvVCYcuOkcu6Ufj.jpg 0
+./data/2wuPp4yYoc2wJbZI.jpg 0
+./data/vzlBbG4Z1KKJ4P6L.jpg 1
+./data/nR8VZBPbjF92wNGC.jpg 2
+......
+```
 
+思路是继承 `torch.utils.data.Dataset`，并重点重写其 `__getitem__` 方法，示例代码如下：
 
+```python
+class CustomDataset(Dataset):
+    def __init__(self, label_file_path):
+        with open(label_file_path, 'r') as f:
+            # (image_path(str), image_label(str))
+            self.imgs = list(map(lambda line: line.strip().split(' '), f))
+    
+    def __getitem__(self, index):
+        path, label = self.imgs[index]
+        img = transforms.Compose([transforms.Scale(224),
+                                  transforms.CenterCrop(224),
+                                  transforms.ToTensor(),])(Image.open(path).convert('RGB'))
+        label = int(label)
+        return img, label
+    
+    def __len__(self):
+        return len(self.imgs)
 
+dataset = CustomDataset('./labels.txt')
+loader = DataLoader(dataset, batch_size=64, shuffle=True)
+```
 
-## **三、SPP有啥好处？**
+至此，可以用 `enumerate(loader)` 的方式迭代数据了。需要注意的是，在 `__getitem__`时要确保 **batch 内图片尺寸相同**（上面的例子用了 Scale+CenterCrop 的方法），否则会出现 `RuntimeError: inconsistent tensor sizes at ...` 的错误。
 
-对于不同尺寸的CNN_Pre输出能够输出固定大小的向量当然是其最大的好处，除此之外SPP的优点还有：
+### 图片文件在不同目录下
 
-1. 可以提取不同尺寸的空间特征信息，可以提升模型对于空间布局和物体变性的鲁棒性。
-2. 可以避免将图片resize、crop成固定大小输入模型的弊端。
+当图片文件依据 label 处于不同文件下时，如：
 
-resize、crop有啥弊端呢？一方面是resize会导致图片中的物体尺寸变形，比如下面这个劳拉；另一方面，crop会导致图片不同位置的信息出现频率不均衡，例如图片中间的部分会比角落的部分会被CNN看到更多次。
+```plain-text
+─── data
+    ├── 虾饺
+    │   ├── 00856315f0df13536183d8ae6cbaf8d6a54f37ce.jpg
+    │   └── 00ce9dccdf9a218d3b891e006c81f8e66524b1b3.jpg
+    ├── 八宝粥
+    │   ├── 055133235f649411e599ce5dba83627d58996209.jpg
+    │   └── 0a72473884cb6c03191ca929a9aa0b2bbe4abb3d.jpg
+    └── 钵仔糕
+        ├── 1237b1e7b7e7da0ac78f9e1c8317b9462fe92803.jpg
+        └── 14a7d6c1a881d1dcfe855bf783064ad2c9d5aba4.jpg
+```
 
-![img](https://ws1.sinaimg.cn/large/006tNc79ly1g2pa0pkbfsj30go09emyp.jpg)
+此时我们可以利用 `torchvision.datasets.ImageFolder` 来直接构造出 dataset，代码如下：
 
-![img](https://ws2.sinaimg.cn/large/006tNc79ly1g2pa0sre82j30go0hidie.jpg)
+```python
+dataset = ImageFolder(path)
+loader = DataLoader(dataset)
+```
 
+ImageFolder 会将目录中的文件夹名自动转化成序列，那么 `loader` 载入时，标签就是整数序列了。
 
+作者：龙鹏-言有三
 
-## **四、SPPNet用于图像分类**
+链接：https://zhuanlan.zhihu.com/p/39455807
 
-将SPP层添加到原有的CNN模型中可以提高其模型表现，有趣的是，最大的提升出现在表现最好的网络Overfeat-7上，提升为top-1 的准确率提升1.65%，由于SPP层输出不变的特性，训练时可以采用不同尺寸的图片，如果在 ![224\times 224](https://www.zhihu.com/equation?tex=224\times+224) 的基础上增加 ![180\times 180](https://www.zhihu.com/equation?tex=180\times+180) 的尺寸进行训练，top-1 准确率会进一步提升0.68%，但如果训练时平均地从180~224选择尺寸进行训练，Overfeat-7的top-1/top-5 error 为 30.06%/10.96%，不如![224\times 224](https://www.zhihu.com/equation?tex=224\times+224)+![180\times 180](https://www.zhihu.com/equation?tex=180\times+180)下的训练结果，原因可能是测试用图是224分辨率的，而平均地从180~224选择尺寸稀释了224的比例。
+来源：知乎
 
-![img](https://ws4.sinaimg.cn/large/006tNc79ly1g2pa0raovtj30go06at9m.jpg)
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
-另外，作者还用ZFNet使用no SPP ![36\times 256](https://www.zhihu.com/equation?tex=36\times+256) 的全连接和![pool_{4\times 4}](https://www.zhihu.com/equation?tex=pool_{4\times+4})、![pool_{3\times 3}](https://www.zhihu.com/equation?tex=pool_{3\times+3})、![pool_{2\times 2}](https://www.zhihu.com/equation?tex=pool_{2\times+2})、![pool_{1\times 1}](https://www.zhihu.com/equation?tex=pool_{1\times+1})组合的SPP输出 ![30\times 256](https://www.zhihu.com/equation?tex=30\times+256) 的维度给全连接层进行对比，有SPP层的ZFNet表现更好，证明了SPP-ZFNet并非靠更多的参数取胜，而是靠其本身的特性取胜。
+下面一个一个解释，完整代码请移步 Git 工程。
 
+（1）datasets.ImageFolder
 
+Pytorch 的 torchvision 模块中提供了一个 dataset 包，它包含了一些基本的数据集如 mnist、coco、imagenet 和一个通用的数据加载器 ImageFolder。
 
-## **五、SPPNet用于物体检测**
+它会以这样的形式组织数据，具体的请到 Git 工程中查看。
 
-SPPNet用于物体检测只需对图像（每种尺寸下）做一次特征提取，比当时的 R-CNN 快了很多，具体算法流程如下：
+```text
+root/left/1.png
+root/left/2.png
+root/left/3.png
 
-1. 使用selective search 生成2000个Proposal区域。
-2. 将图片resize 成 ![s=min(https://www.zhihu.com/equation?tex=s%3Dmin(w%2Ch)\in\{480%2C576%2C688%2C864%2C1200\})\in\{480,576,688,864,1200\}](https://www.zhihu.com/equation?tex=s%3Dmin%28w%2Ch%29%5Cin%5C%7B480%2C576%2C688%2C864%2C1200%5C%7D) ，每种尺寸使用CNN做一次特征提取。
-3. 对于每个Proposal找到Proposal区域大小最接近 ![224\times 224](https://www.zhihu.com/equation?tex=224\times+224) 的那个尺寸，找到feature maps上对应的区域，坐上角坐标 ![x_{lt}=floor(https://www.zhihu.com/equation?tex=x_{lt}%3Dfloor(x%2FS)%2B1)+1](https://www.zhihu.com/equation?tex=x_%7Blt%7D%3Dfloor%28x%2FS%29%2B1) ，右下角坐标 ![x _{rb}=ceil(https://www.zhihu.com/equation?tex=x+_{rb}%3Dceil(x%2FS)-1)-1](https://www.zhihu.com/equation?tex=x+_%7Brb%7D%3Dceil%28x%2FS%29-1) ，其中 ![x](https://www.zhihu.com/equation?tex=x) 为Proposal于图像上的像素坐标，S为feature maps 的最终Stride大小，floor、ceil分别为下取整、上取整。找到对应区域后，使用 ![pool_{6\times 6}](https://www.zhihu.com/equation?tex=pool_{6\times+6}) 、![pool_{3\times 3}](https://www.zhihu.com/equation?tex=pool_{3\times+3})、![pool_{2\times 2}](https://www.zhihu.com/equation?tex=pool_{2\times+2})、![pool_{1\times 1}](https://www.zhihu.com/equation?tex=pool_{1\times+1})对该区域的feature map 进行特征提取，得到 ![50\times Channel](https://www.zhihu.com/equation?tex=50\times+Channel) 维的特征向量。
-4. 每一个类别都使用训练好的二值分类SVM对这个特征向量进行判定，or 使用全连接层+(class_num+1)路softmax进行类别判定。
-5. 边框回归，NMS。
+root/right/1.png
+root/right/2.png
+root/right/3.png
+```
 
-具体的SVM、全连接层微调训练细节可见原论文的4.1章，此不赘述。
+imagefolder 有3个成员变量。
 
+- `self.classes`：用一个 list 保存类名，就是文件夹的名字。
+- `self.class_to_idx`：类名对应的索引，可以理解为 0、1、2、3 等。
+- `self.imgs`：保存（imgpath，class），是图片和类别的数组。
 
+不同文件夹下的图，会被当作不同的类，天生就用于图像分类任务。
 
-SPPNet用于物体检测的效果还是不错的，在取得相当于R-CNN的准度的同时，速度最高提升了102x，具体对比如下列图表：
+（2）Transforms
 
-![img](https://ws2.sinaimg.cn/large/006tNc79ly1g2pa0qjzatj30go0o4jv9.jpg)
+这一点跟 Caffe 非常类似，就是定义了一系列数据集的预处理和增强操作。到此，数据接口就定义完毕了，接下来在训练代码中看如何使用迭代器进行数据读取就可以了，包括 scale、减均值等。
 
-![img](https://ws2.sinaimg.cn/large/006tNc79ly1g2pa0ozf8oj30go09emyp.jpg)
+（3）torch.utils.data.DataLoader
 
+这就是创建了一个 batch，生成真正网络的输入。关于更多 Pytorch 的数据读取方法，请移步知乎专栏和公众号，链接在前面的课程中有给出。
 
+**2.2 模型定义**
 
-最后，有没有觉得SPP和Fast R-CNN的ROI Pooling有些类似？没错，他们是一脉相承的。
+如下：
+
+```text
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    import numpy as np
+    class simpleconv3(nn.Module):`
+    def __init__(self):
+        super(simpleconv3,self).__init__()
+        self.conv1 = nn.Conv2d(3, 12, 3, 2)
+        self.bn1 = nn.BatchNorm2d(12)
+        self.conv2 = nn.Conv2d(12, 24, 3, 2)
+        self.bn2 = nn.BatchNorm2d(24)
+        self.conv3 = nn.Conv2d(24, 48, 3, 2)
+        self.bn3 = nn.BatchNorm2d(48)
+        self.fc1 = nn.Linear(48 * 5 * 5 , 1200)
+        self.fc2 = nn.Linear(1200 , 128)
+        self.fc3 = nn.Linear(128 , 2)
+    def forward(self , x):
+        x = F.relu(self.bn1(self.conv1(x)))
+        #print "bn1 shape",x.shape        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
+        x = x.view(-1 , 48 * 5 * 5) 
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+```
+
+这三节课的任务，都是采用一个简单的 3 层卷积 + 2 层全连接层的网络结构。根据上面的网络结构的定义，需要做以下事情。
+
+（1）simpleconv3(nn.Module)
+
+继承 nn.Module，前面已经说过，Pytorch 的网络层是包含在 nn.Module 里，所以所有的网络定义，都需要继承该网络层。
+
+并实现 super 方法，如下：
+
+```text
+super(simpleconv3,self).__init__()
+```
+
+这个，就当作一个标准，执行就可以了。
+
+（2）网络结构的定义
+
+都在 nn 包里，举例说明：
+
+```text
+torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True)
+```
+
+完整的接口如上，定义的第一个卷积层如下：
+
+```text
+nn.Conv2d(3, 12, 3, 2)
+```
+
+即输入通道为3，输出通道为12，卷积核大小为3，stride=2，其他的层就不一一介绍了，大家可以自己去看 nn 的 API。
+
+（3）forward
+
+backward 方法不需要自己实现，但是 forward 函数是必须要自己实现的，从上面可以看出，forward 函数也是非常简单，串接各个网络层就可以了。
+
+对比 Caffe 和 TensorFlow 可以看出，Pytorch 的网络定义更加简单，初始化方法都没有显示出现，因为 Pytorch 已经提供了默认初始化。
+
+如果我们想实现自己的初始化，可以这么做：
+
+```text
+init.xavier_uniform(self.conv1.weight)init.constant(self.conv1.bias, 0.1)
+```
+
+它会对 conv1 的权重和偏置进行初始化。如果要对所有 conv 层使用 xavier 初始化呢？可以定义一个函数：
+
+```text
+def weights_init(m):    
+    if isinstance(m, nn.Conv2d):
+        xavier(m.weight.data)
+        xavier(m.bias.data)  
+    net = Net()   
+    net.apply(weights_init)
+```
+
+###  模型训练
+
+网络定义和数据加载都定义好之后，就可以进行训练了，老规矩先上代码：
+
+```python
+    def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
+        for epoch in range(num_epochs):
+            print('Epoch {}/{}'.format(epoch, num_epochs - 1))
+            for phase in ['train', 'val']:
+                if phase == 'train':
+                    scheduler.step()
+                    model.train(True)  
+                else:
+                    model.train(False)  
+                    running_loss = 0.0                running_corrects = 0.0
+                for data in dataloders[phase]:
+                    inputs, labels = data
+                    if use_gpu:
+                        inputs = Variable(inputs.cuda())
+                        labels = Variable(labels.cuda())
+                    else:
+                        inputs, labels = Variable(inputs), Variable(labels)
+
+                    optimizer.zero_grad()
+                    outputs = model(inputs)
+                    _, preds = torch.max(outputs.data, 1)
+                    loss = criterion(outputs, labels)
+                    if phase == 'train':
+                        loss.backward()
+                        optimizer.step()
+
+                    running_loss += loss.data.item()
+                    running_corrects += torch.sum(preds == labels).item()
+
+                epoch_loss = running_loss / dataset_sizes[phase]
+                epoch_acc = running_corrects / dataset_sizes[phase]
+
+                if phase == 'train':
+                    writer.add_scalar('data/trainloss', epoch_loss, epoch)
+                    writer.add_scalar('data/trainacc', epoch_acc, epoch)
+                else:
+                    writer.add_scalar('data/valloss', epoch_loss, epoch)
+                    writer.add_scalar('data/valacc', epoch_acc, epoch)
+
+                print('{} Loss: {:.4f} Acc: {:.4f}'.format(
+                phase, epoch_loss, epoch_acc))
+        writer.export_scalars_to_json("./all_scalars.json")
+        writer.close()
+        return model
+```
+
+分析一下上面的代码，外层循环是 epoches，然后利用 for data in dataloders[phase] 循环取一个 epoch 的数据，并塞入 variable，送入 model。需要注意的是，每一次 forward 要将梯度清零，即 `optimizer.zero_grad()`，因为梯度会记录前一次的状态，然后计算 loss，反向传播。
+
+```text
+loss.backward()
+optimizer.step()
+```
+
+下面可以分别得到预测结果和 loss，每一次 epoch 完成计算。
+
+```python
+epoch_loss = running_loss / dataset_sizes[phase]
+epoch_acc = running_corrects / dataset_sizes[phase]
+      
+_, preds = torch.max(outputs.data, 1)
+loss = criterion(outputs, labels)
+```
