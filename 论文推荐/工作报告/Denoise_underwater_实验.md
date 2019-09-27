@@ -15,7 +15,7 @@ UNET 的改进太少
 |    DNGAN    |      |      | 去海洋雪 |  no  | yes  |
 |    DNGAN    |      |      | 去海洋雪 | yes  | yes  |
 | noise2noise |      |      | 对比实验 |  no  |  no  |
-|             |      |      |          |      |      |
+|   ID-CGAN   |      |      |  对比实验  |  no  |  no |
 |             |      |      |          |      |      |
 |             |      |      |          |      |      |
 |             |      |      |          |      |      |
@@ -29,5 +29,5 @@ UNET 的改进太少
 - 训练稳定性曲线变化
 - 用表格进一步描述网络的具体结构
 - Noise2noise 对比实验
-- 
+- ID-CGAN对比实验
 
