@@ -20,7 +20,6 @@ http://www.cis.pku.edu.cn/faculty/vision/zlin/zlin.htm)老师组的工作。
 
 ![image-20190413152531213](https://ws3.sinaimg.cn/large/006tNc79ly1g211cmygglj30ds05f74p.jpg)
 
-
 在特征嵌入网络中，首先是两层卷积网络，第一层卷积的作用是扩充输入图像的通道。F1的输出通道为nlg，n是block的数量，l是每一个block的卷积层数量，g每一个block的增长率。F2的作用是将F1的输出通道数重新整合成它的输入block的通道数，F2的输出通道数为lg。
 
 ![image-20190413152615686](https://ws4.sinaimg.cn/large/006tNc79ly1g211df4nfwj30go057jsy.jpg)

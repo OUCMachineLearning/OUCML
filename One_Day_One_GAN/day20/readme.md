@@ -4,7 +4,7 @@
 解纠缠（Disentanglement），也叫做解耦，就是将原始数据空间中纠缠着的数据变化，变换到一个好的表征空间中，在这个空间中，不同要素的变化是可以彼此分离的。比如，人脸数据集经过编码器，在潜变量空间Z中，我们就会获得人脸是否微笑、头发颜色、方位角等信息的分离表示，我们把这些分离表示称为Factors。
 解纠缠的变量通常包含可解释的语义信息，并且能够反映数据变化中的分离的因子。在生成模型中，我们就可以根据这些分布进行特定的操作，比如改变人脸宽度、添加眼镜等操作。
 
-![591555144950_.pic_hd](https://ws4.sinaimg.cn/large/006tNc79ly1g23pd0y1mqj30pw081jx9.jpg)
+![591555144950_.pic_hd](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042816.jpg)
 
 解纠缠的方法不仅限于VAE，像传统的机器学习算法PCA也可以理解为一种解纠缠的方法。
 
@@ -12,7 +12,7 @@
 [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114)
 VAE是将概率图模型的思想和AE（Auto Encoder）的结合体。
 
-![601555144951_.pic_hd](https://ws2.sinaimg.cn/large/006tNc79ly1g23pd62fasj30du056aae.jpg)
+![601555144951_.pic_hd](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042820.jpg)
 
 看左图的一个概率图模型，假设有一个已知的先验分布P(z)，和能观察到的数据x。我们想要推断后验分布p(z|x),他的计算公式就是下面这个贝叶斯公式。但是当z的维度很高的时候，p(x)的计算是不可行的。这时候我们就设计一个q(z|x)去近似p(z|x)。这个度量就由KL散度给出，通过最小化KL散度，我们就能得到近似的p(z|x)。通过变换，我们就得到下面这个式子,这个式子就等于logp(x)的期望，这个式子也叫做变分下界。最大化这个式子，我们就能近似得到p(x)。
 将这个概率图模型和自编码器结合，我们就得到了右图中的变分自编码器结构。变分自编码器的encoder就可以表示为近似方法q(z|x).
@@ -72,7 +72,7 @@ $$
 =\mathbb{E}_{q(z, n)}\left[\log \frac{q(z | n) p(n)}{q(z) p(n)}\right]+\mathbb{E}_{q(z)}\left[\log \frac{q(z)}{\prod_{j} q\left(z_{j}\right)}\right]+\sum_{j} \mathbb{E}_{q\left(z_{j}\right)}\left[\log \frac{q\left(z_{j}\right)}{p\left(z_{j}\right)}\right]
 $$
 
-![image-20190415230033849](https://ws2.sinaimg.cn/large/006tNc79ly1g23pqo8anqj30po04274y.jpg)
+![image-20190415230033849](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042839.jpg)
 
 
 1. 第一项是索引编码互信息，它与数据变量和潜变量之间的互信息相关。更高的MI表示更好的解纠缠效果。有些研究认为越高的互信息值代表着越好的解纠缠效果，所以可以完全放弃对该项的惩罚。但是有些研究认为对该项惩罚也可以鼓励更好的解纠缠效果。
@@ -115,19 +115,19 @@ $$
 #### 对比结果
 在β-TCVAE中为使用了两个数据集在变分下界和解耦能力上的测验，分别是2d的形状数据集和3D的人脸数据集。这两个数据集的真实因子如图表所示。
 
-![image-20190415230308041](https://ws3.sinaimg.cn/large/006tNc79ly1g23ptctchsj30e205q0uh.jpg)
+![image-20190415230308041](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042847.jpg)
 
 从下面的结果图可以看出，当β值升高，互信息的惩罚在βvae中更大，但是他也阻碍了潜变量中更多有用的信息，所以通过互信息度量可以看出β-tcvae有更高的值。 这里facflow没有去了解。
 
-![image-20190415230323401](https://ws4.sinaimg.cn/large/006tNc79ly1g23ptlyl9ej30m8084q6w.jpg)
+![image-20190415230323401](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042848.jpg)
 
 然后是隐变量中因子之间分布的相关性和独立性对互信息的影响。作者在两个因子的分布上设置了四种不同的取值，作为模拟的噪声，测试了模型对噪声的鲁棒性，从右箱线图中可以看出β-TCVAE的优越性。
 
-![image-20190415230329696](https://ws3.sinaimg.cn/large/006tNc79ly1g23ptq5aznj30ku08wq61.jpg)
+![image-20190415230329696](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042854.jpg)
 
 然后是一些定性的比较，从图六中可以看到在3D椅子数据集上，βVAE只可以学到方位角、尺寸等四种属性，而βTCVEA可以多学到椅子材质、椅子腿的旋转的属性。
 
-![image-20190415230335717](https://ws2.sinaimg.cn/large/006tNc79ly1g23pttwtv4j30mq09jtcg.jpg)
+![image-20190415230335717](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2019-09-30-042856.jpg)
 
 ---
 #### 参考资料
