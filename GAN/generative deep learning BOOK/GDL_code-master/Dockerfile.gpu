@@ -1,0 +1,25 @@
+# See all tag variants at https://hub.docker.com/r/tensorflow/tensorflow/tags/
+# build with `ln -sf Dockerfile.gpu Dockerfile && docker build --network=host -t {container-name} .`
+# NOTE(jwd) - if you wish to use this implementation, you must install nvidia-docker v2.0
+# see https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0) for steps
+FROM tensorflow/tensorflow:latest-gpu-py3-jupyter
+
+## modify below
+ARG username=gdl
+ARG groupid=1000
+ARG userid=1000
+## end modify
+
+COPY ./requirements.txt /
+RUN python3 -m pip install --upgrade pip
+RUN pip install -r /requirements.txt
+
+# -m option creates a fake writable home folder for Jupyter.
+RUN groupadd -g $groupid $username \
+    && useradd -m -r -u $userid -g $username $username
+USER $username
+
+VOLUME ["/GDL"]
+WORKDIR /GDL
+
+CMD ["jupyter", "notebook", "--no-browser", "--ip=0.0.0.0", "/GDL"]

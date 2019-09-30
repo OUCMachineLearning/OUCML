@@ -1,0 +1,2 @@
+story_id,story_text,question,answer_token_ranges
+./cnn/stories/dave.story,"The winning goal was scored by 23-year-old striker Joe Bloggs during the match between Arsenal and Barcelona . Arsenal recently signed the striker for 50 million pounds . The next match is in two weeks time, on July 31st 2005 . ",How much money was spent on the striker ?,24:27
