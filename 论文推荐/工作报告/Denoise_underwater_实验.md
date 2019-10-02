@@ -15,7 +15,7 @@ UNET 的改进太少
 |    DNGAN    |      |      | 去海洋雪 |  no  | yes  |
 |    DNGAN    |      |      | 去海洋雪 | yes  | yes  |
 | noise2noise |      |      | 对比实验 |  no  |  no  |
-|   ID-CGAN   |      |      |  对比实验  |  no  |  no |
+|   ID-CGAN   | 18.677912 | 0.782176 |  对比实验  |  no  |  no |
 |             |      |      |          |      |      |
 |             |      |      |          |      |      |
 |             |      |      |          |      |      |
