@@ -8,17 +8,17 @@
 
 UNET 的改进太少
 
-|             | PSNR | SSIM |   备注   |  SN  |  DA  |  TODO  |
-| :---------: | :--: | :--: | :------: | :--: | :--: | :--: |
-|    DNGAN    |      |      | 去海洋雪 |  no  |  no  |    |
-|    DNGAN    |      |      | 去海洋雪 | yes  |  no  |    |
-|    DNGAN    |      |      | 去海洋雪 |  no  | yes  |   |
-|    DNGAN    |      |      | 去海洋雪 | yes  | yes  |   |
-| noise2noise | 28.219122 | 0.947879 | 对比实验 |  no  |  no  |  yes  |
-|   ID-CGAN   | 18.677912 | 0.782176 |  对比实验  |  no  |  no | yes |
-|             |      |      |          |      |      |      |
-|             |      |      |          |      |      |      |
-|             |      |      |          |      |      |      |
+|             | PSNR | SSIM |   备注   |  SN  |  DA  |  TODO  | URL |
+| :---------: | :--: | :--: | :--: | :--: | :--: | :------: | :------: |
+|    DNGAN    |      |      | 去海洋雪 |  no  |  no  |  doing  | sftp://222.195.151.21:3900//home/ouc/cy/work_jiang/DNGAN/DNGAN |
+|    DNGAN    | ~~30.167056~~ | ~~0.925217~~ | 去海洋雪 | yes  |  no  |  doing  | sftp://222.195.151.21:3900//home/ouc/cy/work_jiang/DNGAN/DNGAN+sn |
+|    DNGAN    |      |      | 去海洋雪 |  no  | yes  | doing | sftp://222.195.151.21:3900//home/ouc/cy/work_jiang/DNGAN/DNGAN+da |
+|    DNGAN    | ~~31.263745~~ | ~~0.940520~~ | 去海洋雪 | yes  | yes  | doing | sftp://222.195.151.21:3900//home/ouc/cy/work_jiang/DNGAN/DNGAN+sn+da |
+| noise2noise | 28.219122 | 0.947879 | 对比实验 |  no  |  no  |  yes  | sftp://222.195.151.21:3902//home/hx/cy/work_jiang/noise2noise-pytorch |
+|   ID-CGAN   | 18.677912 | 0.782176 |  对比实验  |  no  |  no | yes | sftp://222.195.151.21:3902//home/hx/cy/work_jiang/Single-Image-De-Raining-Keras |
+|             |      |      |          |      |      |      |      |
+|             |      |      |          |      |      |      |      |
+|             |      |      |          |      |      |      |      |
 
 需要补充的实验
 
