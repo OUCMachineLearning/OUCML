@@ -1,3 +1,15 @@
+# 动手学深度学习 Pytorch 版(demo)  
+
+
+<div class="text" style=" text-align:center;">(https://github.com/ShusenTang/Dive-into-DL-PyTorch)</div>
+
+
+<div class="text" style=" text-align:center;">
+PDF 制作by [Marcus Yang](https://github.com/chenyang1999)
+</div>
+
+<div style="page-break-after: always;"></div>
+
 # 深度学习简介
 
 （注：此节完全同[原文](https://zh.d2l.ai/chapter_introduction/deep-learning-intro.html)，为了完整性而搬运过来）
@@ -17,6 +29,11 @@
 
 本书希望能帮助读者进入深度学习的浪潮中。我们希望结合数学、代码和样例让深度学习变得触手可及。本书不要求具有高深的数学或编程背景，我们将随着章节的发展逐一解释所需要的知识。更值得一提的是，本书的每一节都是一个可以独立运行的Jupyter记事本。读者可以从网上获得这些记事本，并且可以在个人电脑或云端服务器上执行它们。这样读者就可以随意改动书中的代码并得到及时反馈。我们希望本书能帮助和启发新一代的程序员、创业者、统计学家、生物学家，以及所有对深度学习感兴趣的人。
 
+<div style="page-break-after: always;"></div>
+
+[TOC]
+
+<div style="page-break-after: always;"></div>
 
 ## 起源
 
@@ -221,6 +238,7 @@ conda list | grep torch
 
 
 本节与原文有很大不同，[原文传送门](https://zh.d2l.ai/chapter_prerequisite/install.html)
+
 # 2.2 数据操作
 在深度学习中，我们通常会频繁地对数据进行操作。作为动手学深度学习的基础，本节将介绍如何对内存中的数据进行操作。
 
@@ -10971,6 +10989,7 @@ def train(net, lr, num_epochs):
               % (epoch + 1, l_sum / n, time.time() - start))
 ```
 
+
 现在我们就可以使用负采样训练跳字模型了。
 
 ``` python
@@ -11030,6 +11049,7 @@ cosine sim=0.440: drives
 
 -----------
 > 注：本节除代码外与原书基本相同，[原书传送门](https://zh.d2l.ai/chapter_natural-language-processing/word2vec-gluon.html)
+
 # 10.4 子词嵌入（fastText）
 
 英语单词通常有其内部结构和形成方式。例如，我们可以从“dog”“dogs”和“dogcatcher”的字面上推测它们的关系。这些词都有同一个词根“dog”，但使用不同的后缀来改变词的含义。而且，这个关联可以推广至其他词汇。例如，“dog”和“dogs”的关系如同“cat”和“cats”的关系，“boy”和“boyfriend”的关系如同“girl”和“girlfriend”的关系。这一特点并非为英语所独有。在法语和西班牙语中，很多动词根据场景不同有40多种不同的形态，而在芬兰语中，一个名词可能有15种以上的形态。事实上，构词学（morphology）作为语言学的一个重要分支，研究的正是词的内部结构和形成方式。
@@ -11133,10 +11153,12 @@ $$
 
 这里函数$f$可能的设计并不唯一，我们只需考虑一种较为合理的可能性。注意到条件概率比值是一个标量，我们可以将$f$限制为一个标量函数：$f(\boldsymbol{u}_j, \boldsymbol{u}_k, {\boldsymbol{v}}_i) = f\left((\boldsymbol{u}_j - \boldsymbol{u}_k)^\top {\boldsymbol{v}}_i\right)$。交换索引$j$和$k$后可以看到函数$f$应该满足$f(x)f(-x)=1$，因此一种可能是$f(x)=\exp(x)$，于是
 
-$$f
-(\boldsymbol{u}_j, \boldsymbol{u}_k, {\boldsymbol{v}}_i) = \frac{\exp\left(\boldsymbol{u}_j^\top {\boldsymbol{v}}_i\right)}{\exp\left(\boldsymbol{u}_k^\top {\boldsymbol{v}}_i\right)} \approx \frac{p_{ij}}{p_{ik}}.
 $$
+f(\boldsymbol{u}_j, \boldsymbol{u}_k, {\boldsymbol{v}}_i) = \frac{\exp\left(\boldsymbol{u}_j^\top {\boldsymbol{v}}_i\right)}{\exp\left(\boldsymbol{u}_k^\top {\boldsymbol{v}}_i\right)} \approx \frac{p_{ij}}{p_{ik}}.
+$$
+
 满足最右边约等号的一种可能是$\exp\left(\boldsymbol{u}_j^\top {\boldsymbol{v}}_i\right) \approx \alpha p_{ij}$，这里$\alpha$是一个常数。考虑到$p_{ij}=x_{ij}/x_i$，取对数后$\boldsymbol{u}_j^\top {\boldsymbol{v}}_i \approx \log\,\alpha + \log\,x_{ij} - \log\,x_i$。我们使用额外的偏差项来拟合$- \log\,\alpha + \log\,x_i$，例如，中心词偏差项$b_i$和背景词偏差项$c_j$：
+
 $$
 \boldsymbol{u}_j^\top \boldsymbol{v}_i + b_i + c_j \approx \log(x_{ij}).
 $$
@@ -11154,8 +11176,7 @@ $$
 
 [1] Pennington, J., Socher, R., & Manning, C. (2014). Glove: Global vectors for word representation. In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP) (pp. 1532-1543).
 
-
------------
+---
 > 注：本节与原书完全相同，[原书传送门](https://zh.d2l.ai/chapter_natural-language-processing/glove.html)
 
 
@@ -11611,7 +11632,6 @@ predict_sentiment(net, vocab, ['this', 'movie', 'is', 'so', 'bad']) # negative
 
 [1] Maas, A. L., Daly, R. E., Pham, P. T., Huang, D., Ng, A. Y., & Potts, C. (2011, June). Learning word vectors for sentiment analysis. In Proceedings of the 49th annual meeting of the association for computational linguistics: Human language technologies-volume 1 (pp. 142-150). Association for Computational Linguistics.
 
-
 -----------
 > 注：本节除代码外与原书基本相同，[原书传送门](https://zh.d2l.ai/chapter_natural-language-processing/sentiment-analysis-rnn.html)
 
@@ -11850,7 +11870,6 @@ d2l.predict_sentiment(net, vocab, ['this', 'movie', 'is', 'so', 'bad']) # negati
 
 [1] Kim, Y. (2014). Convolutional neural networks for sentence classification. arXiv preprint arXiv:1408.5882.
 
-
 -----------
 > 注：本节除代码外与原书基本相同，[原书传送门](https://zh.d2l.ai/chapter_natural-language-processing/sentiment-analysis-cnn.html)
 
@@ -11991,7 +12010,7 @@ $$
 
 在最终候选输出序列的集合中，我们取以下分数最高的序列作为输出序列：
 
-$$ \frac{1}{L^\alpha} \log P(y_1, \ldots, y_{L}) = \frac{1}{L^\alpha} \sum_{t'=1}^L \log P(y_{t'} \mid y_1, \ldots, y_{t'-1}, \boldsymbol{c}),$$
+$$\frac{1}{L^\alpha} \log P(y_1, \ldots, y_{L}) = \frac{1}{L^\alpha} \sum_{t'=1}^L \log P(y_{t'} \mid y_1, \ldots, y_{t'-1}, \boldsymbol{c}), $$
 
 其中$L$为最终候选序列长度，$\alpha$一般可选为0.75。分母上的$L^\alpha$是为了惩罚较长序列在以上分数中较多的对数相加项。分析可知，束搜索的计算开销为$\mathcal{O}(k\left|\mathcal{Y}\right|T')$。这介于贪婪搜索和穷举搜索的计算开销之间。此外，贪婪搜索可看作是束宽为1的束搜索。束搜索通过灵活的束宽$k$来权衡计算开销和搜索质量。
 
@@ -12414,7 +12433,9 @@ translate(encoder, decoder, input_seq, max_seq_len)
 
 具体来说，设词数为$n$的子序列的精度为$p_n$。它是预测序列与标签序列匹配词数为$n$的子序列的数量与预测序列中词数为$n$的子序列的数量之比。举个例子，假设标签序列为$A$、$B$、$C$、$D$、$E$、$F$，预测序列为$A$、$B$、$B$、$C$、$D$，那么$p_1 = 4/5,\ p_2 = 3/4,\ p_3 = 1/3,\ p_4 = 0$。设$len_{\text{label}}$和$len_{\text{pred}}$分别为标签序列和预测序列的词数，那么，BLEU的定义为
 
-$$ \exp\left(\min\left(0, 1 - \frac{len_{\text{label}}}{len_{\text{pred}}}\right)\right) \prod_{n=1}^k p_n^{1/2^n},$$
+$$
+\exp\left(\min\left(0, 1 - \frac{len_{\text{label}}}{len_{\text{pred}}}\right)\right) \prod_{n=1}^k p_n^{1/2^n},
+$$
 
 其中$k$是我们希望匹配的子序列的最大词数。可以看到当预测序列和标签序列完全一致时，BLEU为1。
 
