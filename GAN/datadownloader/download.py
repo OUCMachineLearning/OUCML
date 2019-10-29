@@ -1,15 +1,15 @@
 from __future__ import print_function
-import os
-import sys
-import gzip
-import json
-import shutil
-import zipfile
+
 import argparse
-import requests
+import json
+import os
 import subprocess
-from tqdm import tqdm
+import sys
+import zipfile
+
+import requests
 from six.moves import urllib
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='Download dataset for DCGAN.')
 parser.add_argument('datasets', metavar='N', type=str, nargs='+', choices=['celebA', 'lsun', 'mnist'],

@@ -15,15 +15,14 @@ Usage:
 """
 import os
 import time
+from glob import glob
 
 import numpy as np
 import tensorflow as tf
 import tensorlayer as tl
-
-from glob import glob
-
-from utils import get_image
 from model import generator, discriminator
+from utils import get_image
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 # Define TF Flags
 flags = tf.app.flags

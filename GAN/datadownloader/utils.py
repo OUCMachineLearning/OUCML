@@ -1,6 +1,7 @@
-import scipy.misc
 import imageio as io
 import numpy as np
+import scipy.misc
+
 
 def center_crop(x, crop_h, crop_w=None, resize_w=64):
     if crop_w is None:

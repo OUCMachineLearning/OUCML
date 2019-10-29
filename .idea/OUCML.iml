@@ -5,4 +5,8 @@
     <orderEntry type="jdk" jdkName="Python 3.7 (OUCML)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="ReSTService">
+    <option name="workdir" value="$MODULE_DIR$" />
+    <option name="DOC_DIR" value="$MODULE_DIR$" />
+  </component>
 </module>

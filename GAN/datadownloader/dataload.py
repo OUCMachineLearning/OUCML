@@ -6,12 +6,12 @@ Created on Thu Nov  1 17:28:30 2018
 """
 
 from __future__ import print_function, division
+
 import argparse
 import json
-from os.path import join
-
 import subprocess
 import urllib.request
+from os.path import join
 
 __author__ = 'Fisher Yu'
 __email__ = 'fy@cs.princeton.edu'
