@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8172e5c7-9d67-4b16-b0af-579457ef2c24" name="默认更改列表" comment="" />
+    <list default="true" id="8172e5c7-9d67-4b16-b0af-579457ef2c24" name="默认更改列表" comment="updata datasetloader&#10;&#10;Signed-off-by: ChenYang &lt;374263410@qq.com&gt;">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,9 +24,17 @@
     <expand />
     <select />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="ChenYang &lt;34475230+chenyang1999@users.noreply.github.com&gt;" />
         <option value="chenyang1999 &lt;34475230+chenyang1999@users.noreply.github.com&gt;" />
       </list>
     </option>
@@ -47,7 +57,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -80,7 +90,14 @@
       <updated>1572173261807</updated>
       <workItem from="1572173264059" duration="1807000" />
       <workItem from="1572178921434" duration="667000" />
-      <workItem from="1572257542202" duration="22643000" />
+      <workItem from="1572257542202" duration="29730000" />
+      <workItem from="1572402924687" duration="239000" />
+      <workItem from="1572403181860" duration="28000" />
+      <workItem from="1572403223844" duration="296000" />
+      <workItem from="1572403535287" duration="42000" />
+      <workItem from="1572403591520" duration="9000" />
+      <workItem from="1572403617914" duration="28189000" />
+      <workItem from="1572689975466" duration="18681000" />
     </task>
     <task id="LOCAL-00001" summary="updata datasetloader">
       <created>1572323560160</created>
@@ -96,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572323779978</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="updata datasetloader&#10;&#10;Signed-off-by: ChenYang &lt;374263410@qq.com&gt;">
+      <created>1572323887260</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1572323887260</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,17 +163,13 @@
         </entry>
       </map>
     </option>
-    <option name="OPEN_TABS">
-      <set>
-        <option value="1" />
-      </set>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="updata datasetloader" />
-    <option name="LAST_COMMIT_MESSAGE" value="updata datasetloader" />
+    <MESSAGE value="updata datasetloader&#10;&#10;Signed-off-by: ChenYang &lt;374263410@qq.com&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="updata datasetloader&#10;&#10;Signed-off-by: ChenYang &lt;374263410@qq.com&gt;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
