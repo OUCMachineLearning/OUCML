@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8172e5c7-9d67-4b16-b0af-579457ef2c24" name="默认更改列表" comment="updata datasetloader&#10;&#10;Signed-off-by: ChenYang &lt;374263410@qq.com&gt;">
+      <change afterPath="$PROJECT_DIR$/论文推荐/报告/1905.01723.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/论文推荐/报告/Shaham_SinGAN_Learning_a_Generative_Model_From_a_Single_Natural_Image_ICCV_2019_paper.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -97,7 +99,7 @@
       <workItem from="1572403535287" duration="42000" />
       <workItem from="1572403591520" duration="9000" />
       <workItem from="1572403617914" duration="28189000" />
-      <workItem from="1572689975466" duration="18681000" />
+      <workItem from="1572689975466" duration="40917000" />
     </task>
     <task id="LOCAL-00001" summary="updata datasetloader">
       <created>1572323560160</created>
