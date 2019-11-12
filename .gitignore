@@ -31,3 +31,5 @@ GAN/.DS_Store
 .idea/vcs.xml
 .idea/webServers.xml
 .idea/workspace.xml
+*.xml
+.idea/workspace.xml
