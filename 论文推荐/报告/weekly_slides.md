@@ -478,3 +478,20 @@ we use t-SNE to visualize the class code in a two dimensional space. It can be s
 ---
 # THNKS
 ## Q&A
+
+---
+参考⽂献 
+
+1.    M. Liu et al. “Few-Shot Unsupervised Image-to-Image Translation”, arXiv, 2019. 
+2.    M. Liu et al. “Unsupervised Image-to-Image Translation Networks”, NIPS, 2017. 
+3.    X. Huang et al. “Multimodal Unsupervised Image-to-Image Translation”, ECCV, 2018. 
+4. P. Isola et al. “Image-to-Image Translation with Conditional Adversarial Networks”, CVPR, 2017. 
+5.    J. Zhu et al. “Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks”, ICCV, 2017. 
+6.    A. B. L. Larsen, S. K. Sønderby, H. Larochelle, and O. Winther. “Autoencoding beyond pixels using a learned similarity metric”, International Conference on Machine Learning, 2016. 
+
+---
+7.    M.-Y. Liu and O. Tuzel. “Coupled generative adversarial networks”, Advances in Neural Information Processing Systems, 2016. 
+8.    X. Huang and S. Belongie. Arbitrary style transfer in realtime with adaptive instance normalization. In IEEE International Conference on Computer Vision (ICCV), 2017. 
+9.    T. Miyato and M. Koyama. “cGANs with projection discriminator”, ICLR, 2018. 
+10.  T. Park et al. “Semantic Image Synthesis with Spatially-Adaptive Normalization”, arXiv, 2019. 
+11.  A. Noguchi et al. “Image Generation from Small Datasets via Batch Statistics Adaptation”, arXiv, 2019. 
