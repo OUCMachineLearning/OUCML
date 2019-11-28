@@ -1,5 +1,75 @@
 ## **GAN-Coding Implementation**
 
+## Troubleshooting GANs
+
+Just a brief overview of all the methods of troubleshooting that we have discussed up to now, for those of you who like summaries.
+
+**[1] Models.** Make sure models are correctly defined. You can debug the discriminator alone by training on a vanilla image-classification task.
+
+**[2] Data.** Normalize inputs properly to [-1, 1]. Make sure to use tanh as final activation for the generator in this case.
+
+**[3] Noise.** Try sampling the noise vector from a normal distribution (not uniform).
+
+**[4] Normalization.** Apply BatchNorm when possible, and send the real and fake samples in separate mini-batches.
+
+**[5] Activations.** Use LeakyRelu instead of Relu.
+
+**[6] Smoothing.** Apply label smoothing to avoid overconfidence when updating the discriminator, i.e. set targets for real images to less than 1.
+
+**[7] Diagnostics.** Monitor the magnitude of gradients constantly.
+
+**[8] Vanishing gradients.** If the discriminator becomes too strong (discriminator loss = 0), try decreasing its learning rate or update the generator more often.
+
+Now let’s get into the fun part, actually building a GAN.
+
+------
+
+# **Building an Image GAN**
+
+As we have already discussed several times, training a GAN can be frustrating and time-intensive. We will walk through a clean minimal example in Keras. The results are only on the proof-of-concept level to enhance understanding. In the code example, if you don’t tune parameters carefully, you won’t surpass this level (see below) of image generation by much:
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030702.png)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030703.png)
+
+The network takes an **image \*[H, W, C]\*** and outputs a **vector of \*[M]\***, either class scores (classification) or single score quantifying photorealism. Can be any image classification network, e.g. ResNet or DenseNet. We use minimalistic custom architecture.
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030707.png)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030708.png)
+
+Takes a vector of **noise \*[N]\*** and outputs an **image of \*[H, W, C]\***. The network has to perform synthesis. Again, we use a very minimalistic custom architecture.
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030709.png)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030710.png)
+
+It is important to define the models properly in Keras so that the weights of the respective models are fixed at the right time.
+
+[1] Define the discriminator model, and compile it.
+
+[2] Define the generator model, no need to compile.
+
+[3] Define an overall model comprised of these two, setting the discriminator to not trainable before the compilation:
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030705.png)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-30706.png)
+
+In the simplest form, this is all that you need to do to train a GAN.
+
+The training loop has to be executed manually:
+
+[1] Select R real images from the training set.
+
+[2] Generate *F* fake images by sampling random vectors of size *N*, and predicting images from them using the generator.
+
+[3] Train the discriminator using train_on_batch: call it separately for the batch of *R* real images and *F* fake images, with the ground truth being 1 and 0, respectively.
+
+[4] Sample new random vectors of size *N*.
+
+[5] Train the full model on the new vectors using train_on_batch with targets of 1. This will update the generator.
+
 Now we will go through the above minimalistic implementation in code format using Keras on the well-known CelebA dataset. You may need to reference the above procedure if you are confused about the way the code is structured, although I will do my best to walk you through this.
 
 The full code implementation is freely available on my corresponding GitHub repository for this 3-part tutorial.

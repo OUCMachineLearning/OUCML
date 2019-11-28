@@ -51,8 +51,6 @@ To train the two networks we must have a loss function, and the loss function fo
 
 If you are having trouble understanding what is going on, I recommend you go back and read part 1 to get a better intuition of how this training procedure works.
 
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-021718.png)
-
 ![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-021719.png)
 
 It is important to note that in general, the discriminator and generator networks can be any form of mapping function, such as a support vector machine. It is this generalization of GANs which is often sometimes referred to as Turing learning. In practice, however, neural networks are the most common as they are generalized function approximators for arbitrary non-linear functions.
@@ -76,9 +74,7 @@ The applications of this are far-reaching, if not only for the analysis of medic
 
 This also works the other way (assuming we give our networks words that it understands), and images can be generated purely from words. Here is an example of a Multi-Condition GAN (MC-GAN) used to perform this text-to-image conditional synthesis:
 
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-023301.png)
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-023314.png)
+![image-20191128110423864](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030424.png)
 
 Implementation of MC-GAN for translating words into images. Source: https://arxiv.org/pdf/1902.06068.pdf
 
@@ -94,9 +90,7 @@ This one is fairly self-explanatory. GANs learn a data generating distribution l
 
 Style transfer is quite self-explanatory. It involves the transfer of the ‘style’ of one image onto another image. This is very similar to neural style transfer, which I will be discussing in a future article.
 
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-023307.png)
-
-![img](https://miro.medium.com/max/1438/1*1SNfqePTlfrVcYd4HoOAuQ.png)
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-030510.png)
 
 Example of style transfer using a GAN.
 
@@ -326,72 +320,3 @@ In the generator, the prior input noise *p(z)*, and *c* are combined in joint hi
 
 ------
 
-## Troubleshooting GANs
-
-Just a brief overview of all the methods of troubleshooting that we have discussed up to now, for those of you who like summaries.
-
-**[1] Models.** Make sure models are correctly defined. You can debug the discriminator alone by training on a vanilla image-classification task.
-
-**[2] Data.** Normalize inputs properly to [-1, 1]. Make sure to use tanh as final activation for the generator in this case.
-
-**[3] Noise.** Try sampling the noise vector from a normal distribution (not uniform).
-
-**[4] Normalization.** Apply BatchNorm when possible, and send the real and fake samples in separate mini-batches.
-
-**[5] Activations.** Use LeakyRelu instead of Relu.
-
-**[6] Smoothing.** Apply label smoothing to avoid overconfidence when updating the discriminator, i.e. set targets for real images to less than 1.
-
-**[7] Diagnostics.** Monitor the magnitude of gradients constantly.
-
-**[8] Vanishing gradients.** If the discriminator becomes too strong (discriminator loss = 0), try decreasing its learning rate or update the generator more often.
-
-Now let’s get into the fun part, actually building a GAN.
-
-------
-
-# **Building an Image GAN**
-
-As we have already discussed several times, training a GAN can be frustrating and time-intensive. We will walk through a clean minimal example in Keras. The results are only on the proof-of-concept level to enhance understanding. In the code example, if you don’t tune parameters carefully, you won’t surpass this level (see below) of image generation by much:
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024336.png)
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024341.png)
-
-The network takes an **image \*[H, W, C]\*** and outputs a **vector of \*[M]\***, either class scores (classification) or single score quantifying photorealism. Can be any image classification network, e.g. ResNet or DenseNet. We use minimalistic custom architecture.
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024333.png)
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024334.png)
-
-Takes a vector of **noise \*[N]\*** and outputs an **image of \*[H, W, C]\***. The network has to perform synthesis. Again, we use a very minimalistic custom architecture.
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024335.png)
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024339.png)
-
-It is important to define the models properly in Keras so that the weights of the respective models are fixed at the right time.
-
-[1] Define the discriminator model, and compile it.
-
-[2] Define the generator model, no need to compile.
-
-[3] Define an overall model comprised of these two, setting the discriminator to not trainable before the compilation:
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024342.png)
-
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-28-024343.png)
-
-In the simplest form, this is all that you need to do to train a GAN.
-
-The training loop has to be executed manually:
-
-[1] Select R real images from the training set.
-
-[2] Generate *F* fake images by sampling random vectors of size *N*, and predicting images from them using the generator.
-
-[3] Train the discriminator using train_on_batch: call it separately for the batch of *R* real images and *F* fake images, with the ground truth being 1 and 0, respectively.
-
-[4] Sample new random vectors of size *N*.
-
-[5] Train the full model on the new vectors using train_on_batch with targets of 1. This will update the generator.
