@@ -1,5 +1,11 @@
 ## **GAN-Coding Implementation**
 
+## 转载自:[https://towardsdatascience.com/comprehensive-introduction-to-turing-learning-and-gans-part-2-fd8e4a70775](https://link.zhihu.com/?target=https%3A//towardsdatascience.com/comprehensive-introduction-to-turing-learning-and-gans-part-2-fd8e4a70775)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-01-003013.png)
+
+(视情况补上翻译版本)
+
 ## Troubleshooting GANs
 
 Just a brief overview of all the methods of troubleshooting that we have discussed up to now, for those of you who like summaries.
