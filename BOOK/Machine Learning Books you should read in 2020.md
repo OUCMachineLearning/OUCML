@@ -63,3 +63,10 @@ At expert level reading scientific papers often is much better than reading book
 ![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-01-003620.png)
 
 If you’re more mathematically-oriented, then you’ll love [Machine Learning: a Probabilistic Perspective](https://www.amazon.com/gp/product/0262018020/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0262018020&linkCode=as2&tag=petacrunch-20&linkId=a52c63d00ba9f01f29e1db95d6b4c171). It’s a tour-de-force through mathematics behind all machine learning methods. You probably won’t be able to read it at once, but it’s very useful as a reference in machine learning research.
+
+----
+
+我个人推荐大家还是先读好Python cookbook,打好了基础再来炼丹也不迟(说实话见过很多朋友问我的问题大部分都是不是DL or ML'simplement, 反而是很基础的python语法机制.
+
+![“python3 cookbook”的图片搜索结果](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-01-004021.jpg)
+
