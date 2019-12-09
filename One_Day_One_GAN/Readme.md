@@ -12,31 +12,31 @@ Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do so
 
 ## 目录
 
-Day1:[GAN的入门](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day1)
+Day1:[GAN的入门](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day1)
 
-Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day2)
+Day2:[DCGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day2)
 
-Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day3)
+Day3:[Conditional GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day3)
 
-Day4:[ACGAN](<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day4>)
+Day4:[ACGAN](<https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day4>)
 
-Day5:[WGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day5)
+Day5:[WGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day5)
 
-Day6:[SRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day6)
+Day6:[SRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day6)
 
-Day7:[ESRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day7)
+Day7:[ESRGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day7)
 
-Day8:[Attentive GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day8)
+Day8:[Attentive GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day8)
 
-Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day9)
+Day9:[花书笔记1~3](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day9)
 
-Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day10)
+Day10:[infoGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day10)
 
-Day11:[pytorch 可视化(1)](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day11)
+Day11:[pytorch 可视化(1)](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day11)
 
-Day12:[BEGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day12)
+Day12:[BEGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day12)
 
-Day13:[cycleGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day13)
+Day13:[cycleGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day13)
 
 Day14:Pix2Pix
 
@@ -46,17 +46,17 @@ Day16:WGAN GP
 
 Day17:self-attention GAN
 
-Day18:[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day18)
+Day18:[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/masterOne_Day_One_GAN/day18)
 
-Day19:[联合子带学习的CliqueNet在小波域上的图像超分辨复原](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day19)
+Day19:[联合子带学习的CliqueNet在小波域上的图像超分辨复原](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day19)
 
-Day20:[VAE系解纠缠：从VAE到βVAE，再到β-TCVAE](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN/day20)
+Day20:[VAE系解纠缠：从VAE到βVAE，再到β-TCVAE](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day20)
 
 ### Attention!
 
 我用Typora 写的,github 不支持内嵌 LATEX 公式,如果有需要建议 fork 或者 clone 下来用typora 或者说别的支持内嵌公式的编辑器打开,以后会注意的,尽量使用截图.
 
-github:<https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN>
+github:https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN
 
 **原作者:陈扬,现就读与中国海洋大学计算机本科二年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
 
