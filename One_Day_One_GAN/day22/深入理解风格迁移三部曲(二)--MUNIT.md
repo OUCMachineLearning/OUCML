@@ -76,7 +76,7 @@ $$
 
 ![image-20191124192114138](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-11-24-112114.png)
 
-Let x1 ∈ X1 and x2 ∈ X2 be images from two diﬀerent image domains. In the  unsupervised image-to-image translation setting, we are given samples drawn from two marginal distributions p(x1 ) and p(x2 ), without access to the joint  distribution p(x1 , x2 ). Our goal is to estimate the two conditionals p(x2 |x1 )  and p(x1 |x2 ) with learned image-to-image translation models p(x1→2 |x1 ) and  p(x2→1 |x2 ), where x1→2 is a sample produced by translating x1 to X2 (similar  for x2→1 ). In general, p(x2 |x1 ) and p(x1 |x2 ) are complex and multimodal distributions,  in  which  case  a  deterministic  translation  model  does  not  work  well.
+设 $x_1 ∈ X_1,x_2 ∈ X_2$表示两张图片分别属于不同的域 . 在无监督图像风格迁移中, 我们对$X_1$和$X_2$分别采用得到概率分布$p(x_1)$和$p(x_2)$, 而不是求联合概率分布$p(x_1 , x_2 )$. 我们的目标是估计条件概率分布$p(x_2|x_1)$  and $p(x_1|x_2 )$,通过学习图像迁移模型使得$ p(x_{1→2}|x_1)$ and$ p(x_{2→1} |x_2 )$,其中 $x_{1→2}$ 表示的是一种属于$X_1$的图像被转换为属于$X_2$的图像(类似 $x_{2→1}$ ). 通常$ p(x_2 |x_1 )\;and\; p(x_1 |x_2 )$ 是一个混合高斯分布,会导致一个确定性的模型表现的并不尽人意.
 
 
 

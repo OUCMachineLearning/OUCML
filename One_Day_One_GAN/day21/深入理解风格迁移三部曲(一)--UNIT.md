@@ -33,30 +33,32 @@
 先看前半部分:![image_1ct4ss3bu18gs14fs5af1qgrhf420.png-32.1kB][4]
 这个公式的意思是,先看加号前面$\Epsilon_{x\sim p_{data}(x)}[\log D(x)]+\Epsilon_{z\sim p_z(z)}[log(1-D(G(z)))]$
 
- ,我们希望D最大,所以log(D(x))应该最大,意味着我的判别器可以很好的识别出,真实世界图像是"true",在看加号后面$\Epsilon_{z\sim p_z(z)}[\log(1-D(G(z)))]$,要让log尽可能的大,需要的是D(G(z))尽可能的小,意味着我们生成模型的图片应该尽可能的被判别模型视为"FALSE".
+ ,我们希望D最大,所以$log(D(x))$应该最大,意味着我的判别器可以很好的识别出,真实世界图像是"true",在看加号后面$\Epsilon_{z\sim p_z(z)}[\log(1-D(G(z)))]$,要让log尽可能的大,需要的是$D(G(z))$尽可能的小,意味着我们生成模型的图片应该尽可能的被判别模型视为"FALSE".
 
 再看后半部分部分![image_1ct5064nkclm14jh1o401pdm1v349.png-29.7kB][5],
-我们应该让G尽可能的小,加号前面的式子并没有G,所以无关,在看加号后面的式子\Epsilon_{z\sim p_z(z)}[\log(1-D(G(z)))],要让G尽可能地小,就要D(G(Z))尽可能的大,也就是说本来就一张→噪声生成的图片,判别器却被迷惑了,以为是一张真实世界图片.这就是所谓的以假乱真.
+我们应该让$G$尽可能的小,加号前面的式子并没有G,所以无关,在看加号后面的式子$\Epsilon_{z\sim p_z(z)}[\log(1-D(G(z)))]$,要让$G$尽可能地小,就要$D(G(Z))$尽可能的大,也就是说本来就一张→噪声生成的图片,判别器却被迷惑了,以为是一张真实世界图片.这就是所谓的以假乱真.
 ![image_1ct56911djif1ae81ebq10sf1l3om.png-91.4kB][6]
 
 ### VAE
 
-VAE也叫变分自动编码机, 其基础是自编码机(autoencoder),AE通过对输入X进行编码后得到一个低维的向量y，然后根据这个向量还原出输入X，。通过对比X与$ \widetilde {X}$，的误差，再利用神经网络去训练使得误差逐渐 减小从而达到非监督学习的目的. 
+`VAE`也叫变分自动编码机, 其基础是自编码机(autoencoder),AE通过对输入X进行编码后得到一个低维的向量y，然后根据这个向量还原出输入$X$，。通过对比$X$与$ \widetilde {X}$，的误差，再利用神经网络去训练使得误差逐渐 减小从而达到非监督学习的目的. 
 
 ![image-20191208221145293](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-08-141145.png)
 
+简单点来说,就是先通过$f$把$x$映射到$y$,一般来说我们假定$y\sim N(0,1)$,再通过$g$把$y$映射到$ \widetilde {X}$,在这里不长篇大论Reparametrization tricks.
+
 ## UNIT
 
-在我们展开深入理解MUNIT之前,我们来看一下他的前身UNIT,由NVIDIA-Lab在NIPS 2017年提出,该文章首次提Image-Image Translation这个概念，将计算机视觉和计算机图形学的许多任务总结进去，分为一对多和多对一的两类转换任务，包括CV里的边缘检测，图像分割，语义标签以及CG里的mapping labels or sparse user inputs to realistic images.
+UNIT(Unsupervised Image-to-Image Translation Networks),由NVIDIA-Lab在NIPS 2017年提出,该文章首次提Image-Image Translation这个概念，将计算机视觉和计算机图形学的许多任务总结进去，分为一对多和多对一的两类转换任务，包括CV里的边缘检测，图像分割，语义标签以及CG里的mapping labels or sparse user inputs to realistic images.
 
 ![image-20191124143200833](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-08-135441.png)
 
-该文章定义了$\chi_1$和$\chi_2$作为两个图像域.传统的supervised Image-to-image 通过对图像域进行采样,求其联合概率分布$$P_{(\chi_1,\chi_2)}(x_1,x_2)$$,通过Encoder-Decoder的思想,作者定义了两个E和G,希望使得z=E(X)在latent space上近可能的分布一致.意味着当我们同时对$$Sample(\chi_1 ,\chi_2)$$时,我们希望得出:
+该文章定义了$\chi_1$和$\chi_2$作为两个图像域.传统的supervised Image-to-image 通过对图像域进行采样,求其联合概率分布$P_{(\chi_1,\chi_2)}(x_1,x_2)$,通过`Encoder-Decoder`的思想,作者定义了两个E和G,希望使得$z=E(X)$在`latent space`上近可能的分布一致.意味着当我们同时对$Sample(\chi_1 ,\chi_2)$时,我们希望得出:
 $$
 z=E_{1}^{*}\left(x_{1}\right)=E_{2}^{*}\left(x_{2}\right)
 $$
 
-这样,我们得到了两个Domain下image的一致表示,再通过令$$G=D$$,从latent space中重构$\hat{x}=G(z)$,
+这样,我们得到了两个Domain下image的一致表示,再通过令$G=D$,从latent space中重构$\hat{x}=G(z)$,
 
 因此,我们两个采样下的$\{x_1,x_2\}$经过$\{<E_1,G_1>,<E_2,G_1>,<E_1,G_2>,<E_2,G_1>\}$后得到了$\{\hat{x}^{1\rightarrow1}_1,\hat{x}^{2\rightarrow1}_2,\hat{x}^{1\rightarrow2}_1,\hat{x}^{2\rightarrow2}_2\}$,再把:
 $$
@@ -71,27 +73,93 @@ $$
 
 可能细心的你以及发现了这是不是很类似VAE-GAN吗?是的.
 
+### 损失函数
+
 作者通过联合训练4个网络$VAE_1, VAE_2, GAN_1, GAN_2$的三个$loss function$来训练整个网络:
 $$
 \begin{aligned} \min _{E_{1}, E_{2}, G_{1}, G_{2}} \max _{D_{1}, D_{2}} \mathcal{L}_{\mathrm{VAE}_{1}}\left(E_{1}, G_{1}\right)+\mathcal{L}_{\mathrm{GAN}_{1}}\left(E_{2}, G_{1}, D_{1}\right)+\mathcal{L}_{\mathrm{CC}_{1}}\left(E_{1}, G_{1}, E_{2}, G_{2}\right) \\ \mathcal{L}_{\mathrm{VAE}_{2}}\left(E_{2}, G_{2}\right)+\mathcal{L}_{\mathrm{GAN}_{2}}\left(E_{1}, G_{2}, D_{2}\right)+\mathcal{L}_{\mathrm{CC}_{2}}\left(E_{2}, G_{2}, E_{1}, G_{1}\right) \end{aligned}
 $$
-**VAE**的目标是minimize source domain to latent space's KL diversity and latent space to destination domain's KL diversity(我觉得中文太拗口了,这句话实在是说不来)来最小化变分上界,VAE的定义如下:
+```python
+# -------------------------------
+#  Train Encoders and Generators
+# -------------------------------
+# Total loss
+loss_G = (
+    loss_KL_1
+    + loss_KL_2
+    + loss_ID_1
+    + loss_ID_2
+    + loss_GAN_1
+    + loss_GAN_2
+    + loss_KL_1_
+    + loss_KL_2_
+    + loss_cyc_1
+    + loss_cyc_2
+)
+loss_D1 = criterion_GAN(D1(X1), valid) + criterion_GAN(D1(fake_X1.detach()), fake)
+loss_D2 = criterion_GAN(D2(X2), valid) + criterion_GAN(D2(fake_X2.detach()), fake)
+```
+
+`VAE`的目标是minimize source domain to latent space's KL diversity and latent space to destination domain's KL diversity(我觉得中文太拗口了,这句话实在是说不来)来最小化变分上界,VAE的定义如下:
 $$
 \begin{array}{l}{\mathcal{L}_{\mathrm{VAE}_{1}}\left(E_{1}, G_{1}\right)=\lambda_{1} \operatorname{KL}\left(q_{1}\left(z_{1} | x_{1}\right) \| p_{\eta}(z)\right)-\lambda_{2} \mathbb{E}_{z_{1} \sim q_{1}\left(z_{1} | x_{1}\right)}\left[\log p_{G_{1}}\left(x_{1} | z_{1}\right)\right]} \\ {\mathcal{L}_{\mathrm{VAE}_{2}}\left(E_{2}, G_{2}\right)=\lambda_{1} \operatorname{KL}\left(q_{2}\left(z_{2} | x_{2}\right) \| p_{\eta}(z)\right)-\lambda_{2} \mathbb{E}_{z_{2} \sim q_{2}\left(z_{2} | x_{2}\right)}\left[\log p_{G_{2}}\left(x_{2} | z_{2}\right)\right]}\end{array}
 $$
+```python
+# Get shared latent representation
+mu1, Z1 = E1(X1)
+mu2, Z2 = E2(X2)
+# Reconstruct images
+recon_X1 = G1(Z1)
+recon_X2 = G2(Z2)
+# Translate images
+fake_X1 = G1(Z2)
+fake_X2 = G2(Z1)
+loss_KL_1 = lambda_1 * compute_kl(mu1)
+loss_KL_2 = lambda_1 * compute_kl(mu2)
+loss_KL_1_ = lambda_3 * compute_kl(mu1_)
+loss_KL_2_ = lambda_3 * compute_kl(mu2_)
+```
+
 **对抗**:GAN_LOSS被用于确保翻译图像类似图像在目标域.定义如下:
 $$
 \begin{array}{l}{\mathcal{L}_{\mathrm{GAN}_{1}}\left(E_{2}, G_{1}, D_{1}\right)=\lambda_{0} \mathbb{E}_{x_{1} \sim P_{\mathcal{X}_{1}}}\left[\log D_{1}\left(x_{1}\right)\right]+\lambda_{0} \mathbb{E}_{z_{2} \sim q_{2}\left(z_{2} | x_{2}\right)}\left[\log \left(1-D_{1}\left(G_{1}\left(z_{2}\right)\right)\right)\right]} \\ {\mathcal{L}_{\mathrm{GAN}_{2}}\left(E_{1}, G_{2}, D_{2}\right)=\lambda_{0} \mathbb{E}_{x_{2} \sim P_{\mathcal{X}_{2}}}\left[\log D_{2}\left(x_{2}\right)\right]+\lambda_{0} \mathbb{E}_{z_{1} \sim q_{1}\left(z_{1} | x_{1}\right)}\left[\log \left(1-D_{2}\left(G_{2}\left(z_{1}\right)\right)\right)\right]}\end{array}
 $$
+```python
+loss_GAN_1 = lambda_0 * criterion_GAN(D1(fake_X1), valid)
+loss_GAN_2 = lambda_0 * criterion_GAN(D2(fake_X2), valid)
+loss_D1 = criterion_GAN(D1(X1), valid) + criterion_GAN(D1(fake_X1.detach()), fake)
+loss_D2 = criterion_GAN(D2(X2), valid) + criterion_GAN(D2(fake_X2.detach()), fake)
+```
+
 **循环一致性**:由于shared latent-space假设暗含了循环一致性约束，因此我们在提出的框架中实施循环一致性约束，以进一步规范不适定的无监督图像间转换问题。产生的信息处理流称为循环重建流,定义如下:
 $$
 \begin{aligned} \mathcal{L}_{\mathrm{CC}_{1}}\left(E_{1}, G_{1}, E_{2}, G_{2}\right)=&\left.\left.\lambda_{3} \operatorname{KL}\left(q_{1}\left(z_{1} | x_{1}\right) \| p_{\eta}(z)\right)+\lambda_{3} \operatorname{KL}\left(q_{2} | x_{1}^{1 \rightarrow 2}\right)\right) \| p_{\eta}(z)\right)-\\ & \lambda_{4} \mathbb{E}_{z_{2} \sim q_{2}\left(z_{2} | x_{1}^{1 \rightarrow 2}\right)}\left[\log p_{G_{1}}\left(x_{1} | z_{2}\right)\right] \\ \mathcal{L}_{\mathrm{CC}_{2}}\left(E_{2}, G_{2}, E_{1}, G_{1}\right)=&\left.\lambda_{3} \operatorname{KL}\left(q_{2}\left(z_{2} | x_{2}\right) \| p_{\eta}(z)\right)+\lambda_{3} \operatorname{KL}\left(q_{1}\left(z_{1} | x_{2}^{2 \rightarrow 1}\right)\right) \| p_{\eta}(z)\right)-\\ & \lambda_{4} \mathbb{E}_{z_{1} \sim q_{1}\left(z_{1} | x_{2}^{2} \rightarrow 1\right)}\left[\log p_{G_{2}}\left(x_{2} | z_{1}\right)\right] \end{aligned}
 $$
-训练好的网络,我们可以通过对latent sapce的latent variable重编码,进而把输入图像迁移到各个域中:
+```python
+# Cycle translation
+mu1_, Z1_ = E1(fake_X1)
+mu2_, Z2_ = E2(fake_X2)
+cycle_X1 = G1(Z2_)
+cycle_X2 = G2(Z1_)
+loss_ID_1 = lambda_2 * criterion_pixel(recon_X1, X1)
+loss_ID_2 = lambda_2 * criterion_pixel(recon_X2, X2)
+loss_cyc_1 = lambda_4 * criterion_pixel(cycle_X1, X1)
+loss_cyc_2 = lambda_4 * criterion_pixel(cycle_X2, X2)
+```
+
+
+
+训练好的网络,我们可以通过对`latent sapce`的`latent variable`重编码,进而把输入图像迁移到各个域中:
+
+### 实验结果
 
 ![image-20191124154047242](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-08-135443.png)
 
 ![image-20191124153813482](https://cy-1256894686.cos.ap-beijing.myqcloud.com/2019-12-08-135442.png)
+
+作者在展示的时候看起来好像可以实现一对多的风格转换,实际上这个算法只能实现`1对1的风格迁移`,是作者做了`N对1对1`的实验,所以看起来像`1对N`的结果.
+
+这算是比较早期的一篇文章,其实现原理也是借鉴很很多前人的工作,实际上我觉得从原创性上来看比不上cycleGAN,不过这这个VAE-GAN延伸的应用性似乎更好一些.接下来会介绍NVIDIA-Lab的FUNIT和MUNIT.
 
 ---
 
