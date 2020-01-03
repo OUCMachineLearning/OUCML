@@ -39,3 +39,8 @@ Recover:
 | Pix2pix+ESRGAN |      |      |
 | 我们最好的算法 |      |      |
 
+```
+parser.add_argument("--image_path", type=str,default='./tip_data', help="Path to image")
+parser.add_argument("--save_path", type=str,default='show_result/tip_ex', help="test to save")
+```
+
