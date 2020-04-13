@@ -118,14 +118,13 @@ In short, style addresses key attributes of the images in which apply globally t
 Check out the next 60s in this video on how noise creates different image rendering.
 
 <iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FkSLJriaOumA%3Fstart%3D130%26feature%3Doembed%26start%3D130&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DkSLJriaOumA&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FkSLJriaOumA%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" allowfullscreen="" frameborder="0" height="480" width="854" title="A Style-Based Generator Architecture for Generative Adversarial Networks" class="s t u hp ai" scrolling="auto" style="box-sizing: inherit; position: absolute; top: 0px; left: 0px; width: 680px; height: 382.188px;"></iframe>
-
 The last improvement (E) is on Mixing regularization.
 
 # Style Mixing & Mixing regularization
 
 Previously, we generate a latent factor *z* and use it as a single source in deriving the styles. With Mixing regularization, we switch to a different latent factor *z*₂ to derive the style after reaching a certain spatial resolution.
 
-![img](https://miro.medium.com/max/1300/1*rkKAHJyS3B13wXQ3b51cOQ.jpeg)
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2020-04-11-150128.jpg)
 
 As shown below, we use the latent factors that generate image “source B” to derive the coarse spatial resolutions (4×4 to 8×8) style and use that of “source A” for finer spatial resolutions. Therefore, the generated image will have high-level style such as pose, general hairstyle, face shape, and eyeglasses from source B, while all colors (eyes, hair, lighting) and finer facial features resemble A.
 
@@ -145,7 +144,7 @@ In training, a certain percentage of images are generated using two random laten
 
 FFHQ (a dataset of human faces — Flickr-Faces-HQ) is a higher quality dataset compared to the CelebA-HQ with better coverage, like age, ethnicity, image background, and accessories such as eyeglasses, hats, etc. In StyleGAN, the CelebA-HQ dataset will be trained with WGAN-GP as the loss function while FFHQ will use the non-saturated GAN loss with R₁ regularization below.
 
-![img](https://miro.medium.com/max/1600/1*ZLCLn9y0dFEMQabB45dt4Q.jpeg)
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2020-04-11-145933.jpg)
 
 For FFHQ
 
@@ -153,9 +152,9 @@ For FFHQ
 
 Low probability density region in *z* or *w* may not have enough training data to learn it accurately.
 
-![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2020-04-11-140813.jpg)
 
-![img](https://miro.medium.com/max/1300/1*zv5agNQLHWJTs82S2AVjQw.jpeg)
+
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2020-04-11-150019.jpg)
 
 So when generating images, we can avoid those regions to improve the image quality at the cost of the variation. This can be done in truncating *z* or *w*. In StyleGAN, it is done in *w* using:
 
@@ -185,7 +184,7 @@ Such kind of interpolation in the latent-space can yield surprisingly non-linear
 
 Blob-like artifacts (resembling water droplets) are observed in StyleGAN generated images which are more obvious at examining the intermediate feature maps inside the generator network. This issue seems to occur at 64×64 resolution in all feature maps and get worse in higher resolution.
 
-![img](https://miro.medium.com/max/1844/1*KrYTulOLpOb2ub0KpP4wXA.jpeg)
+![img](https://cy-1256894686.cos.ap-beijing.myqcloud.com/cy/2020-04-11-145856.jpg)
 
 [Source](https://arxiv.org/pdf/1912.04958.pdf)
 
