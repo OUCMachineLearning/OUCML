@@ -1,8 +1,8 @@
 # One Day One GAN
 
-Hi ,my name is Chen Yang ,I am a sophomore in ocean university of China .I do some scientific research in my spare time. Based on the current hot direction of artificial intelligence, I hope to share my research progress with **Generative adversarial network**
+Hi ,my name is Chen Yang ,I am a third year student at Ocean University of China. I do some scientific research in my spare time. Based on the current hot direction of artificial intelligence, I hope to share my research progress with **Generative adversarial network**
 
-嗨，我的名字是陈扬，我是中国海洋大学的二年级学生。我在业余时间做了一些科学研究。基于当前人工智能的热点方向，我希望与各位同学**生成对抗网络分享我的研究进展**
+嗨，我的名字是陈扬，我是中国海洋大学的三年级学生。我在业余时间做了一些科学研究。基于当前人工智能的热点方向，我希望与各位同学**生成对抗网络分享我的研究进展**
 
 ## 前言
 
@@ -38,13 +38,13 @@ Day12:[BEGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_On
 
 Day13:[cycleGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day13)
 
-Day14:Pix2Pix
+Day14:[Pix2Pix](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day14)
 
-Day15:LSGAN 
+Day15:[LSGAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day15) 
 
-Day16:WGAN GP
+Day16:[WGAN GP](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day16)
 
-Day17:self-attention GAN
+Day17:[self-attention GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day17)
 
 Day18:[Self-Supervised GAN](https://github.com/OUCMachineLearning/OUCML/tree/masterOne_Day_One_GAN/day18)
 
@@ -52,11 +52,19 @@ Day19:[联合子带学习的CliqueNet在小波域上的图像超分辨复原](ht
 
 Day20:[VAE系解纠缠：从VAE到βVAE，再到β-TCVAE](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day20)
 
+Day21:[风格迁移三部曲--UNIT](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day21)
+
+Day22:[风格迁移三部曲-MUNIT](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day22)
+
+Day23:[风格迁移三部曲-FUNIT](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN/day23)
+
+Day24:[生成对抗网络总览](https://github.com/OUCMachineLearning/OUCML/blob/master/One_Day_One_GAN/day24/Advanced%20Topics%20in%20GANs.md)
+
 ### Attention!
 
 我用Typora 写的,github 不支持内嵌 LATEX 公式,如果有需要建议 fork 或者 clone 下来用typora 或者说别的支持内嵌公式的编辑器打开,以后会注意的,尽量使用截图.
 
 github:https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN
 
-**原作者:陈扬,现就读与中国海洋大学计算机本科二年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
+**原作者:陈扬,现就读与中国海洋大学计算机本科三年级,未经允许不可商用,转载烦请提前联系作者:374263410@qq.com**
 
