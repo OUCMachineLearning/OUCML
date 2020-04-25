@@ -41,7 +41,8 @@ The illustrations are divided into the following steps:
 5. Calculate softmax
 6. Multiply scores with **values**
 7. Sum **weighted** **values** to get Output 1
-8. Repeat steps 4–7 for Input 2 & Input 3
+
+    Repeat steps 4–7 for Input 2 & Input 3
 
 > ***Note\****
 > In practice, the mathematical operations are vectorised, i.e. all the inputs undergo the mathematical operations together. We’ll see this later in the Code section.*
@@ -215,7 +216,7 @@ softmax([2, 4, 4]) = [0.0, 0.5, 0.5]
 
 Fig. 1.6: Derive **weighted** **value** representation (yellow) from multiply **value** (purple) and score (blue)
 
-The softmaxed attention scores for each input (blue) is multiplied with its corresponding **value** (purple). This results in 3 *alignment vectors* (yellow). In this tutorial, we’ll refer to them as **weighted values**.
+The softmaxed attention scores for each input (blue) is multiplied with its corresponding value (purple). This results in 3 *alignment vectors* (yellow). In this tutorial, we’ll refer to them as weighted values.
 
 ```
 1: 0.0 * [1, 2, 3] = [0.0, 0.0, 0.0]
@@ -384,7 +385,7 @@ outputs = weighted_values.sum(dim=0)
 
 ## 3. Extending to Transformers
 
-So, where do we go from here? Transformers! Indeed we live in exciting times of deep learning research and high compute resources. Transformer is the incarnation from [Attention Is All You Need](https://towardsdatascience.com/illustrated-self-attention-2d627e33b20a#9abf), orginally born to perform [neural machine translation](https://en.wikipedia.org/wiki/Neural_machine_translation). Researchers picked up from here, reassembling, cutting, adding and extending the parts, and extend its usage to more language tasks.
+So, where do we go from here? Transformers! Indeed we live in exciting times of deep learning research and high compute resources. Transformer is the incarnation from Attention Is All You Need orginally born to perform neural machine translation. Researchers picked up from here, reassembling, cutting, adding and extending the parts, and extend its usage to more language tasks.
 
 Here I will briefly mention how we can extend self-attention to a Transformer architecture.
 
@@ -427,3 +428,18 @@ That’s all folks! Hope you find the content easy to digest. Is there something
 ## Credits
 
 Special thanks to Xin Jie, Serene, Ren Jie, Kevin and Wei Yih for ideas, suggestions and corrections to this article.
+
+
+
+>
+>
+>
+>
+>1. 准备输入
+>2. 初始化权重
+>3. 导出`key`, `query` and `value`的表示
+>4. 计算输入的注意力得分(`attention scores`)
+>5. 计算softmax
+>6. 将`attention scores`乘以`value`
+>7. 对加权后的`value`求和以得到输出
+>8. 对输入2重复步骤4–7
