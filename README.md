@@ -1,6 +1,6 @@
 # OUCML
 
-[ODOG](https://github.com/OUCMachineLearning/OUCML/tree/master/One%20Day%20One%20GAN)一天一GAN
+[ODOG](https://github.com/OUCMachineLearning/OUCML/tree/master/One_Day_One_GAN)一天一GAN
 
 [GAN](https://github.com/OUCMachineLearning/OUCML/tree/master/GAN)
 
