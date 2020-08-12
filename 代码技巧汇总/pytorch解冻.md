@@ -1,12 +1,4 @@
-作者：ycszen
-
-链接：https://zhuanlan.zhihu.com/p/25980324
-
-来源：知乎
-
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
-# 加载部分预训练模型
+加载部分预训练模型
 
 其实大多数时候我们需要根据我们的任务调节我们的模型，所以很难保证模型和公开的模型完全一样，但是预训练模型的参数确实有助于提高训练的准确率，为了结合二者的优点，就需要我们加载部分预训练模型。
 
@@ -25,7 +17,7 @@ model.load_state_dict(model_dict)
 
 ---
 
-## 微改基础模型
+微改基础模型
 
 PyTorch中的torchvision里已经有很多常用的模型了，可以直接调用：
 
@@ -51,4 +43,68 @@ resnet.fc = nn.Linear(2048, 21)
 ```
 
 ---
+
+逐层解冻(我在 ECCV2020 上提出的训练方法)
+
+加载一个FeatureExtractor
+
+以 densenet 的 dense block 为例:
+
+```python
+dense = densenet121(pretrained=True)
+self.loss_network = nn.Sequential(*list(dense.features)[:5])
+self.loss_network.apply(add_sn)
+for param in self.loss_network.parameters():
+param.requires_grad = False
+
+# vgg=vgg16(pretrained=True)
+# self.loss_network = nn.Sequential(*list(vgg.features)[:16]).eval()
+# self.loss_network.apply(add_sn)
+# for param in self.loss_network.parameters():
+#     param.requires_grad = True
+```
+
+
+
+设置一个 list,储存冻结的层,方便后期解冻
+
+```python
+self.grad = []
+for name, value in self.loss_network.named_parameters():
+   	print('name: {0},\t grad: {1}'.format(name, value.requires_grad))
+if value.requires_grad == False:
+  	self.grad.append(name)
+```
+
+解冻,unfreeze1 函数(自底向上解冻一层)
+
+```
+def unfreeze1(self):
+		if len(self.grad)==0:
+				print("All of network have been unfreeze!")
+    		return
+ 		self.grad.pop()
+  	print("-------------------")
+  	for name, value in self.loss_network.named_parameters():
+    		if name not in self.grad:
+      			value.requires_grad = True
+		for name, value in self.loss_network.named_parameters():
+  		print('name: {0},\t grad: {1}'.format(name, value.requires_grad))
+		print("---------------------")
+```
+
+展示冻结情况:
+
+```
+def showfreeze(self):
+		for i in self.grad:
+    		print(i)
+		print("-------------------")
+```
+
+训练中解冻
+
+```
+network.unfreeze1()
+```
 
