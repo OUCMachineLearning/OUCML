@@ -31,7 +31,7 @@ class STL(object):
         self.length = len(self.train_data_list)
         self.ro_num = self.length / self.batchsize
 
-        print "Train_data_list", self.length
+        print("Train_data_list", self.length)
 
     def load_stl10(self):
 
@@ -39,7 +39,7 @@ class STL(object):
         f = open('./datasets/stl10_binary/unlabeled_X.bin', 'rb')
         for i in range(100000):
 
-            #print i
+            #print(i)
             # read whole file in uint8 chunks
             image = np.fromfile(f, dtype=np.uint8, count=96*96*3)
             image = np.reshape(image, (3, 96, 96))
@@ -82,9 +82,9 @@ class Cifar(object):
         self.channel = 3
         self.batchsize = batch_size
         self.shape = [self.image_size, self.image_size , self.channel]
-        print "before loading cifar"
+        print("before loading cifar")
         self.train_data_list = self.load_cifar()
-        print "after loading cifar"
+        print("after loading cifar")
         self.length = len(self.train_data_list)
         self.ro_num = self.length / self.batchsize
 
@@ -125,7 +125,7 @@ class Cifar(object):
         for i, label in enumerate(trY):
             y_vec[i, int(trY[i])] = 1.0
 
-        print "trX", trX.shape
+        print("trX", trX.shape)
         #concat between train data and test data.
         trX = np.concatenate([trX, teX])
 
@@ -303,7 +303,7 @@ def read_image_list_file(category, is_test):
         #add the image
         list_image.append(path + file_name)
 
-        # print flag
+        # print(flag)
         if flag == ' ':
             #one-hot
             list_label.append(1)
