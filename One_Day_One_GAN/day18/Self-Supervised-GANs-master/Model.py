@@ -55,15 +55,15 @@ class SSGAN(object):
 
         if self.ssup:
             self.images_all, self.images_all_label = self.Rotation_ALL(self.images)
-            print "self.images_all, self.images_all_label", self.images_all.shape, self.images_all_label.shape
+            print("self.images_all, self.images_all_label", self.images_all.shape, self.images_all_label.shape)
             self.fake_images_all, _ = self.Rotation_ALL(self.fake_images)
-            print "self.fake_images_all", self.fake_images_all.shape
+            print("self.fake_images_all", self.fake_images_all.shape)
             _, self.D_real_pro_logits, self.D_real_rot_logits, self.D_real_rot_prob = self.discriminate(self.images_all, resnet=self.resnet, reuse=False)
             self.D_real_pro_logits = self.D_real_pro_logits[:self.batch_size]
             _, self.G_fake_pro_logits, self.G_fake_rot_logits, self.G_fake_rot_prob = self.discriminate(self.fake_images_all, resnet=self.resnet, reuse=True)
             self.G_fake_pro_logits = self.G_fake_pro_logits[:self.batch_size]
-            print "self.D_real_pro_logits", self.D_real_pro_logits
-            print "self.G_fake_pro_logits", self.G_fake_pro_logits
+            print("self.D_real_pro_logits", self.D_real_pro_logits)
+            print("self.G_fake_pro_logits", self.G_fake_pro_logits)
 
         else:
             _, self.D_real_pro_logits = self.discriminate(self.images, resnet=self.resnet, reuse=False)
@@ -139,7 +139,7 @@ class SSGAN(object):
 
         #create summaries to visualize weights
         for var in tf.trainable_variables():
-            #print var.name.split('/')
+            #print(var.name.split('/'))
             variable_summaries(var, var.name.split('/')[1])
 
         self.saver = tf.train.Saver()
@@ -348,11 +348,11 @@ class SSGAN(object):
                             sys.stdout.flush()
 
                         z_var = np.random.normal(0, 1, size=(bs, self.sample_size))
-                        #print z_var[0][0]
+                        #print(z_var[0][0])
                         samples = sess.run(self.test_fake_images, feed_dict={self.test_z: z_var})
                         # save_images(samples[0:10], [1, 10],
                         #             '{}/{:02d}_testoutput.jpg'.format(self.sample_path, step))
-                        #print self.softmax.shape
+                        #print(self.softmax.shape)
                         pred = sess.run(self.softmax, {'ExpandDims:0': (samples + 1.0) * 127.5})
                         preds.append(pred)
 
@@ -413,7 +413,7 @@ class SSGAN(object):
 
     def discriminate(self, x_var, resnet=False, reuse=False):
 
-        print x_var.shape
+        print(x_var.shape)
         with tf.variable_scope("discriminator") as scope:
 
             if reuse:
